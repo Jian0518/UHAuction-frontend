@@ -1,5 +1,5 @@
 {
-  "name": "doubao_community_frontend",
+  "name": "uhauction_frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,8 +7,20 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "axios": "^1.6.7",
+    "buefy": "^0.9.28",
+    "chart.js": "^4.4.2",
     "core-js": "^3.8.3",
-    "vue": "^2.6.14",
+    "darkreader": "^4.9.80",
+    "date-fns": "^3.6.0",
+    "dayjs": "^1.11.10",
+    "element-ui": "^2.15.14",
+    "js-cookie": "^3.0.5",
+    "nprogress": "^0.2.0",
+    "primevue": "^2.6.0",
+    "vditor": "^3.10.2",
+    "vue": "^2.6.11",
+    "vue-media-upload": "^2.2.4",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"
   },
