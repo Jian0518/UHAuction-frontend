@@ -179,7 +179,7 @@
 </template>
 
 <script>
-import { getList } from "@/api/item";
+import { getList, setEnd } from "@/api/item";
 import Pagination from "@/components/Pagination";
 
 export default {
@@ -214,6 +214,7 @@ export default {
         this.ongoingList = data.records;
         // Start countdown timers for each item
         this.ongoingList.forEach((item) => {
+          console.log("Bid count: " + item.bidCount);
           this.startCountdownTimer(item);
         });
       });
@@ -247,10 +248,14 @@ export default {
         const diff = endTime - now;
 
         if (diff <= 0) {
+          if(item.isEnd==0){
+            setEnd(item);
+          }
           clearInterval(intervalId);
           this.$set(this.countdownTimers, itemId, { countdown: "Expired" });
 
           this.pastList.push(item);
+          
           this.ongoingList = this.ongoingList.filter((i) => i.id !== itemId);
           this.expiredItems.push(itemId); // Mark item as expired
           return;

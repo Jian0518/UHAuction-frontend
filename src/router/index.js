@@ -31,6 +31,25 @@ const routes = [
   },
 
   {
+    name: "winner-info",
+    path: "/winner/info/:id",
+    component: () => import("@/views/winner/WinnerInfo"),
+    meta: { title: "Winner Info", requireAuth: true },
+  },
+
+  {
+    name: "payment-success",
+    path: "/pay/success",
+    component: () => import("@/views/pay/Success"),
+    meta: { title: "Pay Success", requireAuth: true},
+  },
+  {
+    name: "payment-cancelled",
+    path: "/pay/cancel",
+    component: () => import("@/views/pay/Cancel"),
+    meta: { title: "Pay Cancelled", requireAuth: true},
+  },
+  {
     name: "item-pay",
     path: "/item/pay",
     component: () => import("@/views/item/Pay"),

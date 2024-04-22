@@ -58,27 +58,68 @@
                             dayjs(item.createTime).format("YYYY/MM/DD HH:mm:ss")
                           }}
                         </span>
+                        <div v-if="token">
+                          <div
+                            v-if="topicUser.username === user.username"
+                            class="level"
+                          >
+                            <div class="level-item mr-1">
+                              <router-link
+                                :to="{
+                                  name: 'item-edit',
+                                  params: { id: item.id },
+                                }"
+                              >
+                                <span class="tag is-warning">Edit</span>
+                              </router-link>
+                            </div>
+                            <div class="level-item">
+                              <a @click="confirmDelete(item.id)">
+                                <span class="tag is-danger">Delete</span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </nav>
                   </div>
-                  <div v-if="token" class="media-right">
-                    <div
-                      v-if="topicUser.username === user.username"
-                      class="level"
+
+                  <div class="level-item mr-2">
+                    <router-link
+                      :to="{
+                        name: 'item-detail',
+                        params: { id: item.id },
+                      }"
                     >
-                      <div class="level-item mr-1">
-                        <router-link
-                          :to="{ name: 'item-edit', params: { id: item.id } }"
-                        >
-                          <span class="tag is-warning">Edit</span>
-                        </router-link>
-                      </div>
-                      <div class="level-item">
-                        <a @click="confirmDelete(item.id)">
-                          <span class="tag is-danger">Delete</span>
-                        </a>
-                      </div>
-                    </div>
+                      <span
+                        v-if="item.isPay == 0"
+                        :href="item.payLink"
+                        class="button is-link"
+                        outlined
+                      >
+                        Pending
+                      </span>
+                    </router-link>
+
+                    <b-button
+                      v-if="item.isPay == 1"
+                      class="button is-warning"
+                      tag="router-link"
+                      :to="{ path: '/winner/info/' + item.id }"
+                      outlined
+                    >
+                      To Be Delivered
+                    </b-button>
+
+                    <b-button
+                      v-if="item.isPay == 2"
+                      class="button is-info"
+                      tag="router-link"
+                      :to="{ path: '/winner/info/' + item.id }"
+                      
+                    >
+                      Delivered
+                    </b-button>
                   </div>
                 </article>
               </div>
@@ -227,16 +268,31 @@
                       class="level"
                     >
                       <div class="level-item mr-2">
-                        <router-link
-                          :to="{
-                            path: '/item/pay',
-                            query: { itemId: item.id, amount: item.highestBid },
-                          }"
+                        <a
+                          v-if="item.isPay == 0"
+                          :href="item.payLink"
+                          class="button is-success"
                         >
-                          <span class="tag is-success is-medium"
-                            >Pending to Pay</span
-                          >
-                        </router-link>
+                          Pay
+                        </a>
+
+                        <button
+                          v-if="item.isPay == 1"
+                          class="button is-success"
+                          disabled
+                        >
+                          Paid
+                        </button>
+
+                        <b-button
+                          v-if="item.isPay == 2"
+                          class="button is-primary"
+                          tag="router-link"
+                          :to="{ path: '/winner/info/' + item.id }"
+                          
+                        >
+                          To Receive
+                        </b-button>
                       </div>
                     </div>
                   </div>
@@ -303,21 +359,19 @@ export default {
       ).then((res) => {
         const { data } = res;
         this.topicUser = data.user;
-        //this[`${this.activeName}s`] = data.items.records; 
+        //this[`${this.activeName}s`] = data.items.records;
         if (this.activeName == "donated") {
-          this.items = data.items.records; 
+          this.items = data.items.records;
           this.page[this.activeName].current = data.items.current;
           this.page[this.activeName].size = data.items.size;
           this.page[this.activeName].total = data.items.total;
-        }
-        else if(this.activeName == "bided"){
-          this.bids = data.bidPage.records; 
+        } else if (this.activeName == "bided") {
+          this.bids = data.bidPage.records;
           this.page[this.activeName].current = data.bidPage.current;
           this.page[this.activeName].size = data.bidPage.size;
           this.page[this.activeName].total = data.bidPage.total;
-        }
-        else{
-          this.wons = data.wonPage.records; 
+        } else {
+          this.wons = data.wonPage.records;
           this.page[this.activeName].current = data.wonPage.current;
           this.page[this.activeName].size = data.wonPage.size;
           this.page[this.activeName].total = data.wonPage.total;

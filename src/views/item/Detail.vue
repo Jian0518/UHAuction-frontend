@@ -74,6 +74,8 @@
         :userId="winner.id"
         :amount="winner.amount"
         :itemId="topic.id"
+        :payLink="winner.payLink"
+        :isPay="winner.isPay"
         v-if="countdownTimer == 'Expired'"
       />
       <lv-comments :slug="topic.id" />
@@ -111,6 +113,8 @@ export default {
       winner: {
         id: "",
         amount: "",
+        payLink: "",
+        isPay: ""
       },
       tags: [],
       images: [],
@@ -180,6 +184,8 @@ export default {
         this.flag = true;
         this.winner.id = data.topic.winnerId;
         this.winner.amount = data.topic.highestBid;
+        this.winner.payLink = data.topic.payLink;
+        this.winner.isPay = data.topic.isPay;
       });
     },
 

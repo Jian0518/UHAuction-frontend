@@ -32,6 +32,16 @@ export function getItem(id) {
   })
 }
 
+export function deliver(id){
+  return request({
+    url: `item/deliver`,
+    method: `get`,
+    params: {
+      id: id
+    }
+  })
+}
+
 export function getAllItem() {
   return request({
     url: `/item/all`,
@@ -61,6 +71,15 @@ export function deleteItem(id) {
   return request({
     url: `/item/delete/${id}`,
     method: 'delete'
+  })
+}
+
+
+export function setEnd(item) {
+  return request({
+    url: `item/setEnd`,
+    method: `post`,
+    data: item
   })
 }
 

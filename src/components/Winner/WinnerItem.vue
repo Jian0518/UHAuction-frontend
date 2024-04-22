@@ -5,19 +5,35 @@
       <el-divider direction="horizontal" />
       <h5>{{ userName }}</h5>
       <figure class="image is-128x128">
-        <img :src="`https://cn.gravatar.com/avatar/${userId}?s=164&d=monsterid`" />
+        <img
+          :src="`https://cn.gravatar.com/avatar/${userId}?s=164&d=monsterid`"
+        />
       </figure>
       <br />
       <p>RM {{ amount }}</p>
       <br />
-      <b-button
-        type="is-primary"
-        tag="router-link"
-        v-if="user.id == userId"
-        :to="{ path: '/item/pay', query: { itemId: itemId, amount: amount } }"
-        outlined
+      <a
+        v-if="user.id == userId && isPay == 0"
+        :href="payLink"
+        class="button is-primary is-outlined"
       >
         Pay
+      </a>
+      <button
+        v-if="user.id == userId && isPay == 1"
+        class="button is-primary is-outlined"
+        disabled
+      >
+        Paid
+      </button>
+
+      <b-button
+        v-if="user.id == userId && isPay == 2"
+        tag="router-link"
+        :to="{ path: '/winner/info/' + itemId }"
+        class="button is-primary "
+      >
+        To Receive
       </b-button>
     </div>
   </section>
@@ -47,7 +63,15 @@ export default {
     itemId: {
       type: String,
       default: null,
-    }
+    },
+    payLink: {
+      type: String,
+      default: null,
+    },
+    isPay: {
+      type: Number,
+      default: null,
+    },
   },
   computed: {
     ...mapGetters(["token", "user"]),
@@ -65,7 +89,6 @@ export default {
   },
 };
 </script>
-
 <style>
 .winner-info {
   margin-bottom: 20px;

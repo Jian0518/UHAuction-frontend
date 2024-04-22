@@ -22,7 +22,7 @@
               </tr>
               <tr>
                 <th>Transfer Reference</th>
-                <td>{{$route.query.itemId}}</td>
+                <td>{{ $route.query.itemId }}</td>
               </tr>
               <tr>
                 <th>Transaction Reference Number</th>
@@ -30,6 +30,7 @@
                   <el-input
                     type="text"
                     maxlength="45"
+                    v-model="payForm.refId"
                     name="paymentReference"
                     autocomplete="chrome-off"
                     required
@@ -49,7 +50,12 @@
             </tbody>
           </table>
           <div class="has-text-centered">
-            <b-button type="is-primary" outlined>Submit</b-button>
+            <a
+              :href="payLink"
+              class="button is-primary is-outlined"
+            >
+              Pay
+            </a>
           </div>
         </div>
       </el-card>
@@ -58,16 +64,52 @@
 </template>
 
 <script>
+import { postPay } from "@/api/pay";
 
 export default {
   name: "TopicPost",
 
   data() {
     return {
-
+      payForm: {
+        itemId: "",
+        refId: "",
+        userId: "",
+        amount: "",
+        status: "",
+      },
     };
   },
-  methods: {},
+
+  props: {
+    payLink: {
+      type: String,
+      default: null,
+    },
+  },
+  methods: {
+    submitForm(formName) {
+      if (this.payForm.refId.length == 0) {
+        alert("Reference number cannot be empty");
+        return false;
+      }
+
+      this.payForm.itemId = this.$route.query.itemId;
+      this.payForm.amount = this.$route.query.amount;
+      this.payForm.userId = this.$route.query.userId;
+      this.payForm.status = "To be approved";
+
+      postPay(this.payForm).then((response) => {
+        const { data } = response;
+        setTimeout(() => {
+          this.$router.push({
+            name: "user",
+            params: { username: this.$route.query.name },
+          });
+        }, 800);
+      });
+    },
+  },
 };
 </script>
 
