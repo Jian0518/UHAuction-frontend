@@ -24,16 +24,25 @@
         class="button is-primary is-outlined"
         disabled
       >
-        Paid
+        To be delivered
       </button>
 
       <b-button
         v-if="user.id == userId && isPay == 2"
         tag="router-link"
-        :to="{ path: '/winner/info/' + itemId }"
+        :to="{ path: '/winner/receive/' + itemId }"
         class="button is-primary "
       >
         To Receive
+      </b-button>
+
+      <b-button
+        v-if="user.id == userId && isPay == 3"
+        tag="router-link"
+        :to="{ path: '/winner/receive/' + itemId }"
+        class="button is-primary "
+      >
+        Completed
       </b-button>
     </div>
   </section>

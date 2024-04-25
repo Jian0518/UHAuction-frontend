@@ -94,7 +94,7 @@
                       <span
                         v-if="item.isPay == 0"
                         :href="item.payLink"
-                        class="button is-link"
+                        class="button is-info is-light"
                         outlined
                       >
                         Pending
@@ -103,7 +103,7 @@
 
                     <b-button
                       v-if="item.isPay == 1"
-                      class="button is-warning"
+                      class="button is-info"
                       tag="router-link"
                       :to="{ path: '/winner/info/' + item.id }"
                       outlined
@@ -119,6 +119,16 @@
                       
                     >
                       Delivered
+                    </b-button>
+
+                     <b-button
+                      v-if="item.isPay == 3"
+                      class="button is-black is-info"
+                      tag="router-link"
+                      :to="{ path: '/winner/info/' + item.id }"
+
+                    >
+                      Completed
                     </b-button>
                   </div>
                 </article>
@@ -281,17 +291,27 @@
                           class="button is-success"
                           disabled
                         >
-                          Paid
+                          To be delivered
                         </button>
 
                         <b-button
                           v-if="item.isPay == 2"
-                          class="button is-primary"
+                          class="button is-info"
                           tag="router-link"
-                          :to="{ path: '/winner/info/' + item.id }"
+                          :to="{ path: '/winner/receive/' + item.id }"
                           
                         >
                           To Receive
+                        </b-button>
+
+                        <b-button
+                          v-if="item.isPay == 3"
+                          class="button is-info"
+                          tag="router-link"
+                          :to="{ path: '/winner/receive/' + item.id }"
+                          
+                        >
+                          Completed
                         </b-button>
                       </div>
                     </div>
@@ -359,6 +379,7 @@ export default {
       ).then((res) => {
         const { data } = res;
         this.topicUser = data.user;
+
         //this[`${this.activeName}s`] = data.items.records;
         if (this.activeName == "donated") {
           this.items = data.items.records;

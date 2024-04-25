@@ -30,7 +30,7 @@
                               params: { id: item.id },
                             }"
                           >
-                            <div class="is-size-5 has-text-weight-bold mb-4">
+                            <div class="is-size-5 has-text-weight-bold mb-4 truncate">
                               {{ item.title }}
                             </div>
                             <div class="center-image-wrapper">
@@ -111,7 +111,7 @@
                               params: { id: item.id },
                             }"
                           >
-                            <div class="is-size-5 has-text-weight-bold mb-4">
+                            <div class="is-size-5 has-text-weight-bold mb-4 truncate">
                               {{ item.title }}
                             </div>
                             <div class="center-image-wrapper">
@@ -296,5 +296,10 @@ export default {
 .center-image-wrapper {
   display: flex;
   justify-content: center;
+}
+.truncate {
+  text-overflow: ellipsis;
+  overflow: hidden;
+
 }
 </style>

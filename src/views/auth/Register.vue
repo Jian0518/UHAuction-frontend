@@ -15,7 +15,7 @@
             label-width="160px"
             class="demo-ruleForm"
           >
-            <el-form-item label="User Id" prop="name">
+            <el-form-item label="User Name" prop="name">
               <el-input v-model="ruleForm.name" />
             </el-form-item>
 
@@ -78,7 +78,7 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: 'Please enter user id', trigger: 'blur' },
+          { required: true, message: 'Please enter user name', trigger: 'blur' },
           {
             min: 2,
             max: 10,

@@ -9,7 +9,7 @@
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="Basic Info" name="first">
               <el-form :label-position="labelPosition" label-width="100px" :model="user">
-                <el-form-item label="User Id">
+                <el-form-item label="User Name">
                   <el-input v-model="user.username" disabled />
                 </el-form-item>
                 <el-form-item label="Alias">

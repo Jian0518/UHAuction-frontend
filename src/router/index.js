@@ -38,6 +38,13 @@ const routes = [
   },
 
   {
+    name: "winner-info-receive",
+    path: "/winner/receive/:id",
+    component: () => import("@/views/winner/WinnerInfoReceive"),
+    meta: { title: "Winner Receive", requireAuth: true },
+  },
+
+  {
     name: "payment-success",
     path: "/pay/success",
     component: () => import("@/views/pay/Success"),

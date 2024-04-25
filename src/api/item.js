@@ -42,6 +42,16 @@ export function deliver(id){
   })
 }
 
+export function receive(id){
+  return request({
+    url: `item/receive`,
+    method: `get`,
+    params: {
+      id: id
+    }
+  })
+}
+
 export function getAllItem() {
   return request({
     url: `/item/all`,

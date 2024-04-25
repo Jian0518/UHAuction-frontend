@@ -34,27 +34,18 @@
         </table>
 
         <div class="buttons is-centered">
-          <el-button v-if="isPay == 1" type="primary" @click="deliverItem" round
-            >Deliver</el-button
-          >
-
-          <el-button
-            v-if="isPay == 2"
-            type="primary"
-            round
-            disabled
-            >Delivered</el-button
+          <el-button v-if="isPay == 2" type="primary" @click="receiveItem" round
+            >Receive</el-button
           >
 
           <el-button
             v-if="isPay == 3"
             type="primary"
+            @click="receiveItem"
             round
             disabled
             >Completed</el-button
           >
-
-
         </div>
       </el-card>
     </div>
@@ -62,7 +53,7 @@
 </template>
 
 <script>
-import { getItem,deliver } from "@/api/item";
+import { getItem,receive } from "@/api/item";
 import { getUserName } from "@/api/user";
 
 export default {
@@ -110,11 +101,11 @@ export default {
       }
     },
 
-    deliverItem() {
+    receiveItem() {
       // Add logic for delivering the item
       this.$message.success("Update successful");
-      console.log("Item delivered!");
-      deliver(this.$route.params.id);
+      console.log("Item received!");
+      receive(this.$route.params.id);
       // Introduce a delay of 1 second before refreshing the page
       setTimeout(() => {
         window.location.reload(); // Refresh the page
