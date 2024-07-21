@@ -26,4 +26,10 @@ export function updateBid(data) {
   })
 }
 
+export function getAllBid(){
+  return request({
+    url: '/bid/all',
+    method: 'get',
+  })
+}
 

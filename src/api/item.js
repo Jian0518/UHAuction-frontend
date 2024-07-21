@@ -93,3 +93,30 @@ export function setEnd(item) {
   })
 }
 
+export function getTopBidder(){
+  return request({
+    url:`item/topBidder`,
+    method: `get`,
+  })
+}
+
+export function getTopDonor(){
+  return request({
+    url:`item/topDonor`,
+    method: `get`,
+  })
+}
+
+export function getFundByMonth(){
+  return request({
+    url:`item/fundMonth`,
+    method: `get`,
+  })
+}
+
+export function getTrend(){
+  return request({
+    url: `/item/trend`,
+    method: `get`,
+  })
+}

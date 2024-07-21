@@ -30,7 +30,7 @@
           tag="router-link"
           :to="{ path: '/statistics/fund' }"
         >
-          💵 Fund Utilization
+          📈 Dashboard
         </b-navbar-item>
 
 
