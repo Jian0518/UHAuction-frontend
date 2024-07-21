@@ -252,7 +252,7 @@ export default {
             setEnd(item);
           }
           clearInterval(intervalId);
-          this.$set(this.countdownTimers, itemId, { countdown: "Expired" });
+          this.$set(this.countdownTimers, itemId, { countdown: "Ended" });
 
           this.pastList.push(item);
           

@@ -30,7 +30,7 @@
           tag="router-link"
           :to="{ path: '/statistics/fund' }"
         >
-          💵 Fund Distribution
+          💵 Fund Utilization
         </b-navbar-item>
 
 
@@ -102,6 +102,15 @@
           👤 My Item
           </b-navbar-item>
           <hr class="dropdown-divider">
+
+          <b-navbar-item
+            tag="router-link"
+            :to="{ path: `/member/${user.username}/favorite` }"
+          >
+            ⭐ Favourite List
+          </b-navbar-item>
+          <hr class="dropdown-divider">
+
           <b-navbar-item
             tag="router-link"
             :to="{ path: `/member/${user.username}/setting` }"
@@ -109,6 +118,7 @@
             ⚙ Setting
           </b-navbar-item>
           <hr class="dropdown-divider">
+          
           <b-navbar-item
             tag="a"
             @click="logout"

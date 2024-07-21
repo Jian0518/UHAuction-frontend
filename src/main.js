@@ -16,6 +16,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import locale from '../node_modules/element-ui/lib/locale/lang/en'
 
 import 'dayjs/locale/zh-cn'
+
 const dayjs = require('dayjs');
 
 

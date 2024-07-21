@@ -29,7 +29,12 @@ const routes = [
     component: () => import("@/views/item/Create"),
     meta: { title: "Donate Item", requireAuth: true },
   },
-
+  {
+    name: "reset-pass",
+    path: "/resetpass",
+    component: () => import("@/views/auth/ResetPass"),
+    meta: { title: "Reset Password" },
+  },
   {
     name: "winner-info",
     path: "/winner/info/:id",
@@ -48,13 +53,13 @@ const routes = [
     name: "payment-success",
     path: "/pay/success",
     component: () => import("@/views/pay/Success"),
-    meta: { title: "Pay Success", requireAuth: true},
+    meta: { title: "Pay Success", requireAuth: true },
   },
   {
     name: "payment-cancelled",
     path: "/pay/cancel",
     component: () => import("@/views/pay/Cancel"),
-    meta: { title: "Pay Cancelled", requireAuth: true},
+    meta: { title: "Pay Cancelled", requireAuth: true },
   },
   {
     name: "item-pay",
@@ -101,6 +106,13 @@ const routes = [
   },
 
   {
+    name: 'favorite',
+    path: '/member/:username/favorite',
+    component: () => import('@/views/item/Favorite'),
+    meta: { title: 'Favorite List' }
+  },
+
+  {
     name: 'user-setting',
     path: '/member/:username/setting',
     component: () => import('@/views/user/Setting'),
@@ -111,10 +123,10 @@ const routes = [
     name: "statistics-fund",
     path: "/statistics/fund",
     component: () => import("@/views/statistics/Fund"),
-    meta: { title: "Fund Statistics"}
+    meta: { title: "Fund Statistics" }
   },
 
-  
+
   {
     path: "/404",
     name: "404",

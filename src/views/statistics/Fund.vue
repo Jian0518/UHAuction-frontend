@@ -1,101 +1,86 @@
 <template>
-  <div>
-    <el-row :gutter="20">
-      <el-col :span="24">
-        <el-card shadow="hover" :body-style="{ padding: '0px' }">
-          <div class="card-content">
-            <div class="card-left">
-              <el-button
-                @click="toggleTotalFundCollectedVisibility"
-                type="primary"
-                style="margin-bottom: 10px"
-                >{{
-                  showTotalFundCollected
-                    ? "Hide"
-                    : "Show"
-                }}
-              </el-button>
-            </div>
-            <div class="card-right">
-              <div class="card-num">RM {{ totalFund }}</div>
-              <div>Total Fund Collected</div>
-            </div>
+  <el-row :gutter="20">
+    <el-col :span="6">
+      <el-card shadow="hover" :body-style="{ padding: '0px' }">
+        <div class="card-content">
+          <div class="card-left"><v-icon icon="fa:fas fa-lock"></v-icon></div>
+          <div class="card-right">
+            <div class="card-num">RM {{ totalFund }}</div>
+            <div>Total Fund Collected</div>
           </div>
+        </div>
+      </el-card>
+    </el-col>
 
-          <el-col :span="24" v-if="showTotalFundCollected">
-            <el-card shadow="hover" :body-style="{ padding: '0px' }">
-              <el-table :data="items" style="width: 100%">
-                <el-table-column label="Name">
-                  <template slot-scope="{ row }">
-                    <span>{{ userNames[row.winnerId] }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="title" label="Item"></el-table-column>
-                <el-table-column
-                  prop="highestBid"
-                  label="Amount"
-                ></el-table-column>
-                <el-table-column label="Date">
-                  <template slot-scope="{ row }">
-                    <span>{{ formatDate(row.endTime) }}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-card>
-          </el-col>
-        </el-card>
-      </el-col>
-
-      <el-col :span="24">
-        <el-card shadow="hover" :body-style="{ padding: '40px' }">
-          <canvas
-            id="fundTypeChart"
-            style="max-width: 400px; margin: 0 auto"
-          ></canvas>
-        </el-card>
-      </el-col>
-
-      <el-col :span="24">
-        <el-card shadow="hover" :body-style="{ padding: '0px' }">
-          <div class="card-content">
-            <div class="card-left">
-              <el-button
-                @click="toggleTableVisibility"
-                type="primary"
-                style="margin-bottom: 10px"
-              >
-                {{ showTable ? "Hide" : "Show" }}
-              </el-button>
-            </div>
-            <div class="card-right">
-              <div class="card-num">RM {{ totalUsedFund }}</div>
-              <div>Total Fund Used</div>
-            </div>
+    <el-col :span="6">
+      <el-card shadow="hover" :body-style="{ padding: '0px' }">
+        <div class="card-content">
+          <div class="card-left"></div>
+          <div class="card-right">
+            <div class="card-num">RM {{ totalUsedFund }}</div>
+            <div>Total Fund Used</div>
           </div>
+        </div>
+      </el-card>
+    </el-col>
 
-          <!-- Table -->
-          <el-col :span="24" v-if="showTable">
-            <el-card shadow="hover" :body-style="{ padding: '0px' }">
-              <el-table :data="fund" style="width: 100%">
-                <el-table-column prop="id" label="ID"></el-table-column>
-                <el-table-column
-                  prop="description"
-                  label="Description"
-                ></el-table-column>
-                <el-table-column prop="amount" label="Amount"></el-table-column>
-                <el-table-column label="Date">
-                  <template slot-scope="{ row }">
-                    <span>{{ formatDate(row.date) }}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="type" label="Type"></el-table-column>
-              </el-table>
-            </el-card>
-          </el-col>
-        </el-card>
-      </el-col>
-    </el-row>
-  </div>
+    <el-col :span="6">
+      <el-card shadow="hover" :body-style="{ padding: '0px' }">
+        <div class="card-content">
+          <div class="card-left"></div>
+          <div class="card-right">
+            <div class="card-num">RM {{ totalUsedFund }}</div>
+            <div>Total Bid</div>
+          </div>
+        </div>
+      </el-card>
+    </el-col>
+
+    <el-col :span="6">
+      <el-card shadow="hover" :body-style="{ padding: '0px' }">
+        <div class="card-content">
+          <div class="card-left"></div>
+          <div class="card-right">
+            <div class="card-num">RM {{ totalUsedFund }}</div>
+            <div>Total Item</div>
+          </div>
+        </div>
+      </el-card>
+    </el-col>
+
+    <el-col :span="12">
+      <el-card shadow="hover" :body-style="{ padding: '40px' }">
+        <canvas
+          id="fundTypeChart"
+          style="max-width: 400px; margin: 0 auto"
+        ></canvas>
+      </el-card>
+    </el-col>
+
+    <el-col :span="6">
+      <el-card shadow="hover" :body-style="{ padding: '40px' }">
+        <div class="card-content">
+          <div class="card-left"></div>
+          <div class="card-right">
+            <div class="card-num">RM {{ totalUsedFund }}</div>
+            <div>Top Contributor</div>
+          </div>
+        </div>
+      </el-card>
+    </el-col>
+
+    <el-col :span="6">
+      <el-card shadow="hover" :body-style="{ padding: '40px' }">
+        <div class="card-content">
+          <div class="card-left"></div>
+          <div class="card-right">
+            <div class="card-num">RM {{ totalUsedFund }}</div>
+            <div>Top Donor</div>
+          </div>
+        </div>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -103,6 +88,8 @@ import { getFund } from "@/api/fund";
 import { getAllItem } from "@/api/item";
 import { getUserName } from "@/api/user";
 import { Chart, PieController, ArcElement, Tooltip, Legend } from "chart.js";
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiAccount } from "@mdi/js";
 Chart.register(PieController, ArcElement, Tooltip, Legend);
 
 export default {
@@ -122,7 +109,11 @@ export default {
       fundTypeData: {},
       showTable: true,
       showTotalFundCollected: true,
+      path: mdiAccount,
     };
+  },
+  components: {
+    SvgIcon,
   },
   created() {
     this.fetchFund();
@@ -160,7 +151,7 @@ export default {
       getAllItem().then((response) => {
         this.value = response.data;
         this.value.forEach((element) => {
-          if (element.isPay >=1) {
+          if (element.isPay >= 1) {
             this.totalFund += element.highestBid;
             this.items.push(element);
             // Fetch and store the user name
@@ -180,8 +171,13 @@ export default {
           datasets: [
             {
               data: Object.values(this.fundTypeData),
-              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56","#36CE84"],
-              hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56","#36CE84"],
+              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#36CE84"],
+              hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56",
+                "#36CE84",
+              ],
             },
           ],
         },
