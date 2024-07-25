@@ -33,3 +33,9 @@ export function getAllBid(){
   })
 }
 
+export function getAvgBid(){
+  return request({
+    url: '/bid/avgBid',
+    method: 'get',
+  })
+}

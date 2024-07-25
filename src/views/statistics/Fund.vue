@@ -1,60 +1,25 @@
 <template>
   <el-row :gutter="20">
-    <el-col :span="12">
+    <el-col :span="6">
       <el-card
         shadow="hover"
         :body-style="{ padding: '20px' }"
         class="dashboard-card"
       >
         <div class="card-content">
-          <div class="card-left">
-            <svg-icon :path="mdiAccount" class="card-icon"></svg-icon>
-          </div>
           <div class="card-right">
             <div class="card-num">{{ bidCount }}</div>
             <div><b>Total Participated Bids</b></div>
           </div>
         </div>
       </el-card>
-    </el-col>
 
-    <el-col :span="12">
-      <el-card
-        shadow="hover"
-        :body-style="{ padding: '20px' }"
-        class="dashboard-card"
-      >
-        <div class="card-content">
-          <div class="card-left">
-            <svg-icon :path="mdiAccount" class="card-icon"></svg-icon>
-          </div>
-          <div class="card-right">
-            <div class="card-num">{{ itemCount }}</div>
-            <div><b>Total Donated Items</b></div>
-          </div>
-        </div>
-      </el-card>
-    </el-col>
-
-    <el-col :span="24">
-      <el-card shadow="hover" :body-style="{ padding: '40px' }">
-        <canvas
-          id="categoryChart"
-          style="max-width: 800px; height: 400px; margin: 0 auto"
-        ></canvas>
-      </el-card>
-    </el-col>
-
-    <el-col :span="12">
       <el-card
         shadow="hover"
         :body-style="{ padding: '20px' }"
         class="dashboard-card"
       >
         <div class="card-content" @click="collectedFundModal">
-          <div class="card-left">
-            <svg-icon :path="mdiAccount" class="card-icon"></svg-icon>
-          </div>
           <div class="card-right">
             <div class="card-num">RM {{ totalFund }}</div>
             <div><b>Total Fund Collected</b></div>
@@ -63,16 +28,26 @@
       </el-card>
     </el-col>
 
-    <el-col :span="12">
+    <el-col :span="6">
+      <el-card
+        shadow="hover"
+        :body-style="{ padding: '20px' }"
+        class="dashboard-card"
+      >
+        <div class="card-content">
+          <div class="card-right">
+            <div class="card-num">{{ itemCount }}</div>
+            <div><b>Total Donated Items</b></div>
+          </div>
+        </div>
+      </el-card>
+
       <el-card
         shadow="hover"
         :body-style="{ padding: '20px' }"
         class="dashboard-card"
       >
         <div class="card-content" @click="usedFundModal">
-          <div class="card-left">
-            <svg-icon :path="mdiAccount" class="card-icon"></svg-icon>
-          </div>
           <div class="card-right">
             <div class="card-num">RM {{ totalUsedFund }}</div>
             <div><b>Total Fund Used</b></div>
@@ -81,60 +56,41 @@
       </el-card>
     </el-col>
 
-    <el-col :span="24">
-      <el-card shadow="hover" :body-style="{ padding: '40px' }">
+    <el-col :span="12">
+      <el-card shadow="hover">
         <canvas
           id="fundTypeChart"
-          style="max-width: 400px; margin: 0 auto"
+          style="max-width: 400px; height: 260px; margin: 0 auto"
         ></canvas>
       </el-card>
     </el-col>
 
     <el-col :span="12">
-      <el-card
-        shadow="hover"
-        :body-style="{ padding: '20px' }"
-        class="dashboard-card"
-      >
-        <div class="card-content" @click="donorModal">
-          <div class="card-left"></div>
-          <div class="card-right">
-            <div class="card-num">{{ topDonor }}</div>
-            <div><b>Top Donor</b></div>
-          </div>
-        </div>
-      </el-card>
-    </el-col>
-
-    <el-col :span="12">
-      <el-card
-        shadow="hover"
-        :body-style="{ padding: '20px' }"
-        class="dashboard-card"
-      >
-        <div class="card-content" @click="bidderModal">
-          <div class="card-left"></div>
-          <div class="card-right">
-            <div class="card-num">{{ topBidder }}</div>
-            <div><b>Top Bidder</b></div>
-          </div>
-        </div>
-      </el-card>
-    </el-col>
-
-    <el-col :span="24">
       <el-card shadow="hover" :body-style="{ padding: '40px' }">
         <canvas
           id="fundMonthChart"
-          style="max-width: 800px; height: 400px; margin: 0 auto"
+          style="max-width: 400px; height: 260px; margin: 0 auto"
         ></canvas>
       </el-card>
-    </el-col>
 
-    <el-col :span="12">
       <el-card
         shadow="hover"
-        :body-style="{ padding: '20px' }"
+        :body-style="{ padding: '30px' }"
+        class="dashboard-card"
+      >
+        <div class="card-content" @click="trendModal">
+          <div class="card-left"></div>
+          <div class="card-right">
+            <div class="card-num">{{ trendCategory }}</div>
+            <div><b>Most Trending Category Item last month </b></div>
+          </div>
+        </div>
+      </el-card>
+
+
+         <el-card
+        shadow="hover"
+        :body-style="{ padding: '30px' }"
         class="dashboard-card"
       >
         <div class="card-content">
@@ -147,20 +103,89 @@
       </el-card>
     </el-col>
 
-    <el-col :span="12">
+    <el-col :span="6">
       <el-card
         shadow="hover"
-        :body-style="{ padding: '20px' }"
+        :body-style="{ padding: '30px' }"
         class="dashboard-card"
       >
-        <div class="card-content" @click="trendModal">
+        <div class="card-content" @click="donorModal">
           <div class="card-left"></div>
           <div class="card-right">
-            <div class="card-num">{{ trendCategory }}</div>
-            <div><b>Most Trending Category Item last month </b></div>
+            <div class="card-num">{{ topDonor }}</div>
+            <div><b>Top Donor</b></div>
           </div>
         </div>
       </el-card>
+    </el-col>
+
+    <el-col :span="6">
+      <el-card
+        shadow="hover"
+        :body-style="{ padding: '30px' }"
+        class="dashboard-card"
+      >
+        <div class="card-content" @click="bidderModal">
+          <div class="card-left"></div>
+          <div class="card-right">
+            <div class="card-num">{{ topBidder }}</div>
+            <div><b>Top Bidder</b></div>
+          </div>
+        </div>
+      </el-card>
+    </el-col>
+
+    <el-col :span="6">
+      <el-card
+        shadow="hover"
+        :body-style="{ padding: '30px' }"
+        class="dashboard-card"
+      >
+        <div class="card-content">
+          <div class="card-right">
+            <div class="card-num">{{ itemThisMonth }}</div>
+            <div><b>Newly Added Items</b></div>
+          </div>
+        </div>
+      </el-card>
+    </el-col>
+
+    <el-col :span="6">
+      <el-card
+        shadow="hover"
+        :body-style="{ padding: '30px' }"
+        class="dashboard-card"
+      >
+        <div class="card-content">
+          <div class="card-left"></div>
+          <div class="card-right">
+            <div class="card-num">{{ AvgBid }}</div>
+            <div><b>Average Bid Amount </b></div>
+          </div>
+        </div>
+      </el-card>
+    </el-col>
+
+    <el-col :span="12">
+   <el-card shadow="hover" :body-style="{ padding: '40px' }">
+        <canvas
+          id="itemsByMonthChart"
+          style="max-width: 400px; height: 260px; margin: 0 auto"
+        ></canvas>
+      </el-card>
+    </el-col>
+
+    <el-col :span="24">
+      <el-card shadow="hover" :body-style="{ padding: '40px' }">
+        <canvas
+          id="categoryChart"
+          style="max-width: 800px; height: 400px; margin: 0 auto"
+        ></canvas>
+      </el-card>
+    </el-col>
+
+    <el-col :span="24">
+      
     </el-col>
 
     <!-- Collected Fund Modal -->
@@ -274,12 +299,19 @@
 
 <script>
 import { getFund } from "@/api/fund";
-import { getTopBidder, getTopDonor, getFundByMonth, getTrend, getAllItem } from "@/api/item";
+import {
+  getTopBidder,
+  getTopDonor,
+  getFundByMonth,
+  getTrend,
+  getAllItem,
+  getItemByMonth,
+} from "@/api/item";
 import { getCategory } from "@/api/category";
 import { getUserName } from "@/api/user";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiAccount } from "@mdi/js";
-import { getAllBid } from "@/api/bid";
+import { getAllBid, getAvgBid } from "@/api/bid";
 import {
   Chart,
   BarController,
@@ -316,17 +348,20 @@ export default {
   data() {
     return {
       items: [],
+      itemsByMonth: [],
       fund: [],
       donors: [],
       bidders: [],
       topDonor: "",
       topBidder: "",
-      trendCategory: '',
+      trendCategory: "",
       imgUrl: [],
       fundMonth: [],
       category: [],
       trend: [],
       percentageChange: 0,
+      itemThisMonth: 0,
+      AvgBid: 0,
       totalFund: 0.0,
       totalUsedFund: 0.0,
       value: {
@@ -356,6 +391,8 @@ export default {
     this.fetchFundMonth();
     this.fetchCategory();
     this.fetchTrend();
+    this.fetchItemByMonth();
+    this.fetchAvgBid();
   },
   methods: {
     collectedFundModal() {
@@ -371,11 +408,16 @@ export default {
       this.showBidderModal = !this.showBidderModal;
     },
     trendModal() {
-      this.showTrendModal = !this.showTrendModal; 
-    }, 
+      this.showTrendModal = !this.showTrendModal;
+    },
     showName(id) {
       getUserName(id).then((response) => {
         return response.data;
+      });
+    },
+    fetchAvgBid() {
+      getAvgBid().then((result) => {
+        this.AvgBid = result.data;
       });
     },
     fetchCategory() {
@@ -434,11 +476,69 @@ export default {
         },
       });
     },
+    fetchItemByMonth() {
+      getItemByMonth().then((result) => {
+        this.itemsByMonth = result.data;
+        this.itemThisMonth = result.data[result.data.length - 1].amount;
+        this.renderItemsByMonthChart();
+      });
+    },
+
+    renderItemsByMonthChart() {
+      const ctx = document.getElementById("itemsByMonthChart").getContext("2d");
+      const labels = this.itemsByMonth.map((item) => item.month);
+      const data = this.itemsByMonth.map((item) => item.amount);
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Items Donated",
+              data: data,
+              backgroundColor: "#36A2EB",
+              borderColor: "#36A2EB",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Items Donated by Month in 2024",
+              font: {
+                size: 18,
+              },
+            },
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Month",
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Number of Items",
+              },
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    },
     fetchTrend() {
       getTrend().then((result) => {
-        this.trend = result.data; 
-        this.trendCategory = this.trend[0].name; 
-      })
+        this.trend = result.data;
+        this.trendCategory = this.trend[0].name;
+      });
     },
     fetchFund() {
       getFund().then((result) => {

@@ -120,3 +120,10 @@ export function getTrend(){
     method: `get`,
   })
 }
+
+export function getItemByMonth(){
+  return request({
+    url: `item/itemMonth`,
+    method: `get`,
+  })
+}
