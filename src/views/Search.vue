@@ -2,55 +2,39 @@
   <div>
     <el-card shadow="never">
       <div slot="header" class="clearfix">
-        Retrieved <code>{{ list.length }}</code>
-        item(s) related to <code class="has-text-info">{{ query.keyword }}</code>
+        <span class="is-size-5 has-text-weight-bold">Retrieved <code>{{ list.length }}</code> item(s) related to <code class="has-text-info">{{ query.keyword }}</code></span>
       </div>
       <div>
-        <article v-for="(item, index) in list" :key="index" class="media">
+        <article v-for="(item, index) in list" :key="index" class="media box my-4">
           <div class="media-left">
-            <figure class="image is-48x48">
-              <img :src="`http://localhost:9000/uhauction/item/img/${item.cover}`"> 
+            <figure class="image is-64x64">
+              <img :src="`http://localhost:9000/uhauction/item/img/${item.cover}`">
             </figure>
           </div>
           <div class="media-content">
-            <div class="">
+            <div>
               <p class="ellipsis is-ellipsis-1">
                 <el-tooltip class="item" effect="dark" :content="item.title" placement="top">
                   <router-link :to="{name:'item-detail',params:{id:item.id}}">
-                    <span class="is-size-6">{{ item.title }}</span>
+                    <span class="is-size-5 has-text-weight-bold">{{ item.title }}</span>
                   </router-link>
                 </el-tooltip>
               </p>
             </div>
-            <nav class="level has-text-grey is-mobile  is-size-7 mt-2">
+            <nav class="level has-text-grey is-mobile is-size-6 mt-2">
               <div class="level-left">
-                <div class="level-left">
-                  <span class="mr-2">Bids:{{ item.bidCount }}</span>
-
-                  <span class="mr-2">
-                    End time:{{ dayjs(item.endTime).format("YYYY/MM/DD") }}
-                  </span>
-
-                  <span
-                    v-for="(tag, index) in item.tags"
-                    :key="index"
-                    class="tag is-hidden-mobile is-success is-light mr-1"
-                  >
-                    <router-link :to="{ name: 'tag', params: { name: tag.name } }">
-                      {{ "#" + tag.name }}
-                    </router-link>
-                  </span>
-
-  
-                </div>
+                <span class="mr-2">Bids: {{ item.bidCount }}</span>
+                <span class="mr-2">End time: {{ dayjs(item.endTime).format("YYYY/MM/DD") }}</span>
+                <span v-for="(tag, index) in item.tags" :key="index" class="tag is-hidden-mobile is-success is-light mr-1">
+                  <router-link :to="{ name: 'tag', params: { name: tag.name } }">
+                    {{ "#" + tag.name }}
+                  </router-link>
+                </span>
               </div>
             </nav>
           </div>
-          <div class="media-right" />
         </article>
       </div>
-
-
       <pagination
         v-show="query.total > 0"
         :total="query.total"
@@ -98,5 +82,11 @@ export default {
 </script>
 
 <style scoped>
-
+.media {
+  padding: 1.5rem;
+  align-items: center;
+}
+.media-left {
+  margin-right: 1.5rem;
+}
 </style>

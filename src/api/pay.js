@@ -20,3 +20,14 @@ export function postPay(pay) {
     })
   }
 
+  export function topupSuccess(amount,userId) {
+    return request({
+      url: '/ums/user/topup/success',
+      method: 'get',
+      params: {
+        amount: amount,
+        userId: userId
+      }
+    }
+    )
+  }

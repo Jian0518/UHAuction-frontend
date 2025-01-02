@@ -22,7 +22,7 @@
         <div class="card-content" @click="collectedFundModal">
           <div class="card-right">
             <div class="card-num">RM {{ totalFund }}</div>
-            <div><b>Total Fund Collected</b></div>
+            <div><b>Total Funds Raised</b></div>
           </div>
         </div>
       </el-card>
@@ -50,7 +50,7 @@
         <div class="card-content" @click="usedFundModal">
           <div class="card-right">
             <div class="card-num">RM {{ totalUsedFund }}</div>
-            <div><b>Total Fund Used</b></div>
+            <div><b>Total Funds Utilized</b></div>
           </div>
         </div>
       </el-card>
@@ -82,7 +82,7 @@
           <div class="card-left"></div>
           <div class="card-right">
             <div class="card-num">{{ trendCategory }}</div>
-            <div><b>Most Trending Category Item last month </b></div>
+            <div><b>Most Trending Category Item for Last Month </b></div>
           </div>
         </div>
       </el-card>
@@ -97,7 +97,7 @@
           <div class="card-left"></div>
           <div class="card-right">
             <div class="card-num">{{ percentageChange }}%</div>
-            <div><b>Collected Funds Increased from Last Month</b></div>
+            <div><b>Increase in Collected Funds Compared to Last Month</b></div>
           </div>
         </div>
       </el-card>
@@ -280,7 +280,7 @@
 
     <!-- Trend Modal -->
     <el-dialog :visible.sync="showTrendModal" width="80%" center>
-      <h2 slot="title"><b>Most Trending Category Items Last Month </b></h2>
+      <h2 slot="title"><b>Most Trending Category Item for Last Month </b></h2>
       <el-table :data="trend" style="width: 100%">
         <el-table-column label="Rank">
           <template slot-scope="scope">
@@ -591,8 +591,8 @@ export default {
         return;
       }
 
-      const currentMonth = this.fundMonth[this.fundMonth.length - 1].amount;
-      const lastMonth = this.fundMonth[this.fundMonth.length - 2].amount;
+      const currentMonth = this.fundMonth[this.fundMonth.length - 2].amount;
+      const lastMonth = this.fundMonth[this.fundMonth.length - 3].amount;
 
       if (lastMonth === 0) {
         this.percentageChange = currentMonth === 0 ? 0 : 100;

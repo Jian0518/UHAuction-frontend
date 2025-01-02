@@ -37,7 +37,9 @@
               >
               <el-button @click="resetForm('ruleForm')">Reset</el-button>
             </el-form-item>
-            <router-link :to="{path:'/resetpass'}"><u>Forget Password</u></router-link>
+            <router-link :to="{ path: '/resetpass' }"
+              ><u>Forget Password</u></router-link
+            >
           </el-form>
         </div>
       </el-card>
@@ -59,7 +61,11 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: "Please enter user name", trigger: "blur" },
+          {
+            required: true,
+            message: "Please enter user name",
+            trigger: "blur",
+          },
           {
             min: 2,
             max: 15,
@@ -87,6 +93,8 @@ export default {
           this.$store
             .dispatch("user/login", this.ruleForm)
             .then(() => {
+              const user = { username: this.ruleForm.name };
+              localStorage.setItem("user", JSON.stringify(user)); // Store username in session storage
               this.$message({
                 message: "Login successfully",
                 type: "success",

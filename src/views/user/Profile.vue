@@ -27,15 +27,26 @@
         <!--item donated by user-->
         <el-card class="box-card content" shadow="never">
           <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="Donated Item" name="donated">
+            <el-tab-pane label="All Donated Items" name="donated">
               <div v-if="items.length === 0">No item</div>
 
               <div v-else class="topicUser-info">
                 <article
                   v-for="(item, index) in items"
                   :key="index"
-                  class="media"
+                  class="media box"
                 >
+                  <!-- <div class="media-left"> -->
+                  <router-link
+                    :to="{ name: 'item-detail', params: { id: item.id } }"
+                  >
+                    <figure class="image is-96x96">
+                      <img
+                        :src="`http://localhost:9000/uhauction/item/img/${item.cover}`"
+                      />
+                    </figure>
+                  </router-link>
+                  <!-- </div> -->
                   <div class="media-content">
                     <div class="content ellipsis is-ellipsis-1">
                       <el-tooltip
@@ -84,52 +95,53 @@
                     </nav>
                   </div>
 
-                  <div class="level-item mr-2">
-                    <router-link
-                      :to="{
-                        name: 'item-detail',
-                        params: { id: item.id },
-                      }"
-                    >
-                      <span
-                        v-if="item.isPay == 0"
-                        :href="item.payLink"
-                        class="button is-info is-light"
-                        outlined
+                  <div
+                    v-if="topicUser.username === user.username"
+                    class="level"
+                  >
+                    <div class="level-item mr-2">
+                      <router-link
+                        :to="{
+                          name: 'item-detail',
+                          params: { id: item.id },
+                        }"
                       >
-                        Pending
-                      </span>
-                    </router-link>
+                        <span
+                          v-if="item.isPay == 0"
+                          :href="item.payLink"
+                          class="button is-info is-light fixed-width-button is-light"
+                        >
+                          Pending
+                        </span>
+                      </router-link>
 
-                    <b-button
-                      v-if="item.isPay == 1"
-                      class="button is-info"
-                      tag="router-link"
-                      :to="{ path: '/winner/info/' + item.id }"
-                      outlined
-                    >
-                      To Be Delivered
-                    </b-button>
+                      <b-button
+                        v-if="item.isPay == 1"
+                        class="button is-success fixed-width-button is-light"
+                        tag="router-link"
+                        :to="{ path: '/winner/info/' + item.id }"
+                      >
+                        To Deliver
+                      </b-button>
 
-                    <b-button
-                      v-if="item.isPay == 2"
-                      class="button is-info"
-                      tag="router-link"
-                      :to="{ path: '/winner/info/' + item.id }"
-                      
-                    >
-                      Delivered
-                    </b-button>
+                      <b-button
+                        v-if="item.isPay == 2"
+                        class="button is-warning fixed-width-button is-light"
+                        tag="router-link"
+                        :to="{ path: '/winner/info/' + item.id }"
+                      >
+                        Delivered
+                      </b-button>
 
-                     <b-button
-                      v-if="item.isPay == 3"
-                      class="button is-black is-info"
-                      tag="router-link"
-                      :to="{ path: '/winner/info/' + item.id }"
-
-                    >
-                      Completed
-                    </b-button>
+                      <b-button
+                        v-if="item.isPay == 3"
+                        class="button is-black is-primary fixed-width-button is-light"
+                        tag="router-link"
+                        :to="{ path: '/winner/info/' + item.id }"
+                      >
+                        Completed
+                      </b-button>
+                    </div>
                   </div>
                 </article>
               </div>
@@ -144,15 +156,35 @@
               />
             </el-tab-pane>
 
-            <el-tab-pane label="Bided Item" name="bided">
-              <div v-if="bids.length === 0">No item</div>
+            <el-tab-pane
+              label="To Deliver"
+              name="deliver"
+              v-if="topicUser.username === user.username"
+            >
+              <div
+                v-if="delivers.length === 0"
+                class="notification is-warning has-text-centered"
+              >
+                No item
+              </div>
 
               <div v-else class="topicUser-info">
                 <article
-                  v-for="(item, index) in bids"
+                  v-for="(item, index) in delivers"
                   :key="index"
-                  class="media"
+                  class="media box"
                 >
+                  <router-link
+                    :to="{ name: 'item-detail', params: { id: item.id } }"
+                  >
+                    <figure class="media-left">
+                      <p class="image is-96x96">
+                        <img
+                          :src="`http://localhost:9000/uhauction/item/img/${item.cover}`"
+                        />
+                      </p>
+                    </figure>
+                  </router-link>
                   <div class="media-content">
                     <div class="content ellipsis is-ellipsis-1">
                       <el-tooltip
@@ -163,110 +195,25 @@
                       >
                         <router-link
                           :to="{ name: 'item-detail', params: { id: item.id } }"
+                          class="has-text-weight-bold is-size-5"
                         >
                           {{ item.title }}
                         </router-link>
                       </el-tooltip>
                     </div>
-                    <nav class="level has-text-grey is-size-7">
+                    <nav
+                      class="level has-text-danger is-size-6 has-text-weight-bold"
+                    >
                       <div class="level-left">
-                        <span class="mr-1">
-                          Created:{{
-                            dayjs(item.createTime).format("YYYY/MM/DD HH:mm:ss")
-                          }}
-                        </span>
+                        <span class="mr-1"> Bid: RM{{ item.highestBid }} </span>
                       </div>
                     </nav>
-                  </div>
-                  <div v-if="token" class="media-right">
-                    <div
-                      v-if="topicUser.username === user.username"
-                      class="level"
-                    >
-                      <div
-                        v-if="new Date(item.endTime) < new Date(currentDate)"
-                      >
-                        <div
-                          class="level-item mr-2"
-                          :class="{
-                            'is-warning': item.winnerId != user.id,
-                            'is-danger': item.winnerId == user.id,
-                          }"
-                        >
-                          <router-link
-                            :to="{
-                              name: 'item-detail',
-                              params: { id: item.id },
-                            }"
-                          >
-                            <span
-                              class="tag is-medium"
-                              :class="{
-                                'is-warning': item.winnerId == user.id,
-                                'is-danger': item.winnerId != user.id,
-                              }"
-                            >
-                              {{ item.winnerId == user.id ? "Win" : "Lost" }}
-                            </span>
-                          </router-link>
-                        </div>
-                      </div>
-                      <div v-else>
-                        <div class="level-item mr-2">
-                          <router-link
-                            :to="{
-                              name: 'item-detail',
-                              params: { id: item.id },
-                            }"
-                          >
-                            <span class="tag is-info is-medium">Pending</span>
-                          </router-link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              </div>
 
-              <pagination
-                v-show="page[activeName].total > 0"
-                class="mt-5"
-                :total="page[activeName].total"
-                :page.sync="page[activeName].current"
-                :limit.sync="page[activeName].size"
-                @pagination="fetchUserById"
-              />
-            </el-tab-pane>
-
-            <el-tab-pane label="Won Item" name="won">
-              <div v-if="wons.length === 0">No item</div>
-
-              <div v-else class="topicUser-info">
-                <article
-                  v-for="(item, index) in wons"
-                  :key="index"
-                  class="media"
-                >
-                  <div class="media-content">
-                    <div class="content ellipsis is-ellipsis-1">
-                      <el-tooltip
-                        class="item"
-                        effect="dark"
-                        :content="item.title"
-                        placement="top"
-                      >
-                        <router-link
-                          :to="{ name: 'item-detail', params: { id: item.id } }"
-                        >
-                          {{ item.title }}
-                        </router-link>
-                      </el-tooltip>
-                    </div>
                     <nav class="level has-text-grey is-size-7">
                       <div class="level-left">
                         <span class="mr-1">
-                          Created:{{
-                            dayjs(item.createTime).format("YYYY/MM/DD HH:mm:ss")
+                          End Time:{{
+                            dayjs(item.endTime).format("YYYY/MM/DD HH:mm:ss")
                           }}
                         </span>
                       </div>
@@ -278,38 +225,202 @@
                       class="level"
                     >
                       <div class="level-item mr-2">
-                        <a
-                          v-if="item.isPay == 0"
-                          :href="item.payLink"
-                          class="button is-success"
-                        >
-                          Pay
-                        </a>
-
-                        <button
-                          v-if="item.isPay == 1"
-                          class="button is-success"
-                          disabled
-                        >
-                          To be delivered
-                        </button>
-
                         <b-button
-                          v-if="item.isPay == 2"
-                          class="button is-info"
+                          class="button is-success is-outlined fixed-width-button"
                           tag="router-link"
-                          :to="{ path: '/winner/receive/' + item.id }"
-                          
+                          :to="{ path: '/winner/info/' + item.id }"
                         >
-                          To Receive
+                          Deliver
                         </b-button>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
 
+              <pagination
+                v-show="page[activeName].total > 0"
+                class="mt-5"
+                :total="page[activeName].total"
+                :page.sync="page[activeName].current"
+                :limit.sync="page[activeName].size"
+                @pagination="fetchUserById"
+              />
+            </el-tab-pane>
+
+            <el-tab-pane
+              label="Pending"
+              name="pending"
+              v-if="topicUser.username === user.username"
+            >
+              <div
+                v-if="pendings.length === 0"
+                class="notification is-warning has-text-centered"
+              >
+                No item
+              </div>
+
+              <div v-else class="topicUser-info">
+                <article
+                  v-for="(item, index) in pendings"
+                  :key="index"
+                  class="media box"
+                >
+                  <router-link
+                    :to="{ name: 'item-detail', params: { id: item.id } }"
+                  >
+                    <figure class="media-left">
+                      <p class="image is-96x96">
+                        <img
+                          :src="`http://localhost:9000/uhauction/item/img/${item.cover}`"
+                        />
+                      </p>
+                    </figure>
+                  </router-link>
+                  <div class="media-content">
+                    <div class="content ellipsis is-ellipsis-1">
+                      <el-tooltip
+                        class="item"
+                        effect="dark"
+                        :content="item.title"
+                        placement="top"
+                      >
+                        <router-link
+                          :to="{ name: 'item-detail', params: { id: item.id } }"
+                          class="has-text-weight-bold is-size-5"
+                        >
+                          {{ item.title }}
+                        </router-link>
+                      </el-tooltip>
+                    </div>
+                    <nav
+                      class="level has-text-danger is-size-6 has-text-weight-bold"
+                    >
+                      <div class="level-left">
+                        <span class="mr-1"> Bid: RM**** </span>
+                      </div>
+                    </nav>
+
+                    <nav class="level has-text-grey is-size-7">
+                      <div class="level-left">
+                        <span class="mr-1">
+                          End Time:{{
+                            dayjs(item.endTime).format("YYYY/MM/DD HH:mm:ss")
+                          }}
+                        </span>
+                      </div>
+                    </nav>
+                  </div>
+                  <div v-if="token" class="media-right">
+                    <div
+                      v-if="topicUser.username === user.username"
+                      class="level"
+                    >
+                      <div class="level-item mr-2">
+                        <router-link
+                          :to="{
+                            name: 'item-detail',
+                            params: { id: item.id },
+                          }"
+                        >
+                          <b-button
+                            v-if="item.isPay == 0"
+                            :href="item.payLink"
+                            outlined
+                            class="button is-info is-outlined fixed-width-button"
+                          >
+                            Pending
+                          </b-button>
+                        </router-link>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <pagination
+                v-show="page[activeName].total > 0"
+                class="mt-5"
+                :total="page[activeName].total"
+                :page.sync="page[activeName].current"
+                :limit.sync="page[activeName].size"
+                @pagination="fetchUserById"
+              />
+            </el-tab-pane>
+
+            <el-tab-pane
+              label="Completed"
+              name="complete"
+              v-if="topicUser.username === user.username"
+            >
+              <div
+                v-if="completes.length === 0"
+                class="notification is-warning has-text-centered"
+              >
+                No item
+              </div>
+
+              <div v-else class="topicUser-info">
+                <article
+                  v-for="(item, index) in completes"
+                  :key="index"
+                  class="media box"
+                >
+                  <router-link
+                    :to="{ name: 'item-detail', params: { id: item.id } }"
+                  >
+                    <figure class="media-left">
+                      <p class="image is-96x96">
+                        <img
+                          :src="`http://localhost:9000/uhauction/item/img/${item.cover}`"
+                        />
+                      </p>
+                    </figure>
+                  </router-link>
+                  <div class="media-content">
+                    <div class="content ellipsis is-ellipsis-1">
+                      <el-tooltip
+                        class="item"
+                        effect="dark"
+                        :content="item.title"
+                        placement="top"
+                      >
+                        <router-link
+                          :to="{ name: 'item-detail', params: { id: item.id } }"
+                          class="has-text-weight-bold is-size-5"
+                        >
+                          {{ item.title }}
+                        </router-link>
+                      </el-tooltip>
+                    </div>
+                    <nav
+                      class="level has-text-danger is-size-6 has-text-weight-bold"
+                    >
+                      <div class="level-left">
+                        <span class="mr-1"> Bid: RM{{ item.highestBid }} </span>
+                      </div>
+                    </nav>
+
+                    <nav class="level has-text-grey is-size-7">
+                      <div class="level-left">
+                        <span class="mr-1">
+                          End Time:{{
+                            dayjs(item.endTime).format("YYYY/MM/DD HH:mm:ss")
+                          }}
+                        </span>
+                      </div>
+                    </nav>
+                  </div>
+                  <div v-if="token" class="media-right">
+                    <div
+                      v-if="topicUser.username === user.username"
+                      class="level"
+                    >
+                      <div class="level-item mr-2">
                         <b-button
-                          v-if="item.isPay == 3"
-                          class="button is-info"
+                          class="button is-primary is-outlined fixed-width-button"
                           tag="router-link"
-                          :to="{ path: '/winner/receive/' + item.id }"
-                          
+                          :to="{ path: '/winner/info/' + item.id }"
                         >
                           Completed
                         </b-button>
@@ -350,12 +461,14 @@ export default {
       activeName: "donated",
       topicUser: {},
       items: [],
-      bids: [],
-      wons: [],
+      completes: [],
+      delivers: [],
+      pendings: [],
       page: {
-        donated: { current: 1, size: 5, total: 0 },
-        bided: { current: 1, size: 5, total: 0 },
-        won: { current: 1, size: 5, total: 0 },
+        donated: { current: 1, size: 10, total: 0 },
+        complete: { current: 1, size: 5, total: 0 },
+        deliver: { current: 1, size: 5, total: 0 },
+        pending: { current: 1, size: 5, total: 0 },
       },
     };
   },
@@ -386,16 +499,39 @@ export default {
           this.page[this.activeName].current = data.items.current;
           this.page[this.activeName].size = data.items.size;
           this.page[this.activeName].total = data.items.total;
-        } else if (this.activeName == "bided") {
-          this.bids = data.bidPage.records;
-          this.page[this.activeName].current = data.bidPage.current;
-          this.page[this.activeName].size = data.bidPage.size;
-          this.page[this.activeName].total = data.bidPage.total;
-        } else {
-          this.wons = data.wonPage.records;
-          this.page[this.activeName].current = data.wonPage.current;
-          this.page[this.activeName].size = data.wonPage.size;
-          this.page[this.activeName].total = data.wonPage.total;
+        } else if (this.activeName == "complete") {
+          this.items = data.items.records;
+          var i = 0;
+          this.items.forEach((item) => {
+            if (item.isPay == 2 || item.isPay == 3) {
+              this.completes[i++] = item;
+            }
+          });
+          this.page[this.activeName].current = data.items.current;
+          this.page[this.activeName].size = data.items.size;
+          this.page[this.activeName].total = this.completes.length;
+        } else if (this.activeName == "deliver") {
+          this.items = data.items.records;
+          var i = 0;
+          this.items.forEach((item) => {
+            if (item.isPay == 1) {
+              this.delivers[i++] = item;
+            }
+          });
+          this.page[this.activeName].current = data.items.current;
+          this.page[this.activeName].size = data.items.size;
+          this.page[this.activeName].total = this.delivers.length;
+        } else if (this.activeName == "pending") {
+          this.items = data.items.records;
+          var i = 0;
+          this.items.forEach((item) => {
+            if (item.isPay == 0) {
+              this.pendings[i++] = item;
+            }
+          });
+          this.page[this.activeName].current = data.items.current;
+          this.page[this.activeName].size = data.items.size;
+          this.page[this.activeName].total = this.pendings.length;
         }
       });
     },
@@ -425,4 +561,9 @@ export default {
 </script>
 
 <style scoped>
+.fixed-width-button {
+  width: 120px; /* Set the desired width */
+  height: 35px;
+  text-align: center; /* Center the text inside the button */
+}
 </style>

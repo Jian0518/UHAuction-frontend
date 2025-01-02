@@ -18,7 +18,7 @@
             </div>
             <div class="card-right">
               <div class="card-num">RM {{ totalFund }}</div>
-              <div>Total Fund Collected</div>
+              <div>Total Funds Raised</div>
             </div>
           </div>
 

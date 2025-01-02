@@ -1,12 +1,9 @@
 <template>
   <header class="header has-background-white has-text-black">
-    <b-navbar
-      class="container is-white"
-      :fixed-top="true"
-    >
+    <b-navbar class="container is-white" :fixed-top="true">
       <template slot="brand">
         <b-navbar-item tag="div">
-          <img :src="uhImg" alt="logo">
+          <img :src="uhImg" alt="logo" />
         </b-navbar-item>
 
         <b-navbar-item
@@ -18,22 +15,13 @@
         </b-navbar-item>
       </template>
       <template slot="start">
-        <b-navbar-item
-          tag="router-link"
-          :to="{ path: '/' }"
-        >
+        <b-navbar-item tag="router-link" :to="{ path: '/' }">
           🌐 Home
         </b-navbar-item>
 
-
-        <b-navbar-item
-          tag="router-link"
-          :to="{ path: '/statistics/fund' }"
-        >
+        <b-navbar-item tag="router-link" :to="{ path: '/statistics/fund' }">
           📈 Dashboard
         </b-navbar-item>
-
-
       </template>
 
       <template slot="end">
@@ -50,29 +38,18 @@
             />
 
             <p class="control">
-              <b-button
-                class="is-light"
-                @click="search()"
-              >🔍
-              </b-button>
+              <b-button class="is-light" @click="search()">🔍 </b-button>
             </p>
           </b-field>
         </b-navbar-item>
 
         <b-navbar-item tag="div">
-          <b-switch
-            v-model="darkMode"
-            passive-type="is-warning"
-            type="is-dark"
-          >
+          <b-switch v-model="darkMode" passive-type="is-warning" type="is-dark">
             {{ darkMode ? "Dark" : "Bright" }}
           </b-switch>
         </b-navbar-item>
 
-        <b-navbar-item
-          v-if="token == null || token === ''"
-          tag="div"
-        >
+        <b-navbar-item v-if="token == null || token === ''" tag="div">
           <div class="buttons">
             <b-button
               class="is-light"
@@ -91,17 +68,30 @@
           </div>
         </b-navbar-item>
 
-        <b-navbar-dropdown
-          v-else
-          :label="user.alias"
-        >
+        <b-navbar-dropdown v-else :label="user.alias">
           <b-navbar-item
             tag="router-link"
             :to="{ path: `/member/${user.username}/home` }"
           >
-          👤 My Item
+            🎀 My Items
           </b-navbar-item>
-          <hr class="dropdown-divider">
+          <hr class="dropdown-divider" />
+
+          <b-navbar-item
+            tag="router-link"
+            :to="{ path: `/member/${user.username}/bid` }"
+          >
+            🎖️My Bids
+          </b-navbar-item>
+          <hr class="dropdown-divider" />
+
+          <b-navbar-item
+            tag="router-link"
+            :to="{ path: `/chat/Im` }"
+          >
+            🗯️Chat
+          </b-navbar-item>
+          <hr class="dropdown-divider" />
 
           <b-navbar-item
             tag="router-link"
@@ -109,7 +99,7 @@
           >
             ⭐ Favourite List
           </b-navbar-item>
-          <hr class="dropdown-divider">
+          <hr class="dropdown-divider" />
 
           <b-navbar-item
             tag="router-link"
@@ -117,13 +107,9 @@
           >
             ⚙ Setting
           </b-navbar-item>
-          <hr class="dropdown-divider">
-          
-          <b-navbar-item
-            tag="a"
-            @click="logout"
-          > 👋 Logout
-          </b-navbar-item>
+          <hr class="dropdown-divider" />
+
+          <b-navbar-item tag="a" @click="logout"> 🚪 Logout </b-navbar-item>
         </b-navbar-dropdown>
       </template>
     </b-navbar>
@@ -131,66 +117,69 @@
 </template>
 
 <script>
-import { disable as disableDarkMode, enable as enableDarkMode } from 'darkreader'
-import { getDarkMode, setDarkMode } from '@/utils/auth'
-import { mapGetters } from 'vuex'
+import {
+  disable as disableDarkMode,
+  enable as enableDarkMode,
+} from "darkreader";
+import { getDarkMode, setDarkMode } from "@/utils/auth";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'Header',
+  name: "Header",
   data() {
     return {
-      logoUrl: require('@/assets/logo3.png'),
-      uhImg: require('@/assets/image/UH_logo.png'),
-      searchKey: '',
-      darkMode: false
-    }
+      logoUrl: require("@/assets/logo3.png"),
+      uhImg: require("@/assets/image/UH_logo.png"),
+      searchKey: "",
+      darkMode: false,
+    };
   },
   computed: {
-    ...mapGetters(['token', 'user'])
+    ...mapGetters(["token", "user"]),
   },
   watch: {
-    // listen to theme mode 
+    // listen to theme mode
     darkMode(val) {
       if (val) {
-        enableDarkMode({})
+        enableDarkMode({});
       } else {
-        disableDarkMode()
+        disableDarkMode();
       }
-      setDarkMode(this.darkMode)
-    }
+      setDarkMode(this.darkMode);
+    },
   },
   created() {
     // get mode from cookie
-    this.darkMode = getDarkMode()
+    this.darkMode = getDarkMode();
     if (this.darkMode) {
-      enableDarkMode({})
+      enableDarkMode({});
     } else {
-      disableDarkMode()
+      disableDarkMode();
     }
   },
   methods: {
     async logout() {
-      this.$store.dispatch('user/logout').then(() => {
-        this.$message.info('Logout Successfully')
+      this.$store.dispatch("user/logout").then(() => {
+        this.$message.info("Logout Successfully");
         setTimeout(() => {
-          this.$router.push({ path: this.redirect || '/' })
-        }, 500)
-      })
+          this.$router.push({ path: this.redirect || "/" });
+        }, 500);
+      });
     },
     search() {
-      console.log(this.token)
-      if (this.searchKey.trim() === null || this.searchKey.trim() === '') {
+      console.log(this.token);
+      if (this.searchKey.trim() === null || this.searchKey.trim() === "") {
         this.$message.info({
           showClose: true,
-          message: 'Please enter keyword to search！',
-          type: 'warning'
-        })
-        return false
+          message: "Please enter keyword to search！",
+          type: "warning",
+        });
+        return false;
       }
-      this.$router.push({ path: '/search?key=' + this.searchKey })
-    }
-  }
-}
+      this.$router.push({ path: "/search?key=" + this.searchKey });
+    },
+  },
+};
 </script>
 
 <style scoped>

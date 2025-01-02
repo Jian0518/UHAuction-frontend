@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { getItem, update } from "@/api/item";
+import { getItem, updateItem } from "@/api/item";
 
 export default {
   name: "TopicEdit",
@@ -90,7 +90,7 @@ export default {
     handleUpdate: function () {
       this.topic.content = this.content;
       this.topic.endTime = this.endTime;
-      update(this.topic).then((response) => {
+      updateItem(this.topic).then((response) => {
         const { data } = response;
         console.log(data);
         setTimeout(() => {

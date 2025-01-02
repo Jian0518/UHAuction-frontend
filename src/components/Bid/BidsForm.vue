@@ -45,7 +45,7 @@ export default {
     isValidAmount() {
       // Check if amount is a valid number
       return !isNaN(parseFloat(this.amount)) && isFinite(this.amount);
-    }
+    },
   },
   props: {
     slug: {
@@ -58,8 +58,6 @@ export default {
       this.isLoading = true;
       try {
         let itemData = {};
-        console.log(this.amount);
-        console.log(this.slug);
         itemData["amount"] = this.amount;
         itemData["item_id"] = this.slug;
         console.log("Item data: " + itemData.amount);
@@ -67,8 +65,10 @@ export default {
         await pushBid(itemData);
         this.$emit("loadBids", this.slug);
         this.$message.success("Bid Success");
-        // Refresh the page
-        window.location.reload();
+        // Wait for 1 second before refreshing the page
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } catch (e) {
         this.$buefy.toast.open({
           message: `Cannot bid this item. ${e}`,

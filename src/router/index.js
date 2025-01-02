@@ -50,6 +50,19 @@ const routes = [
   },
 
   {
+    name: "Im",
+    path: "/chat/Im",
+    component: () => import("@/views/Im/Im")
+  },
+
+  {
+    name: "topup-success",
+    path: "/topup/success",
+    component: () => import("@/views/pay/Topup"),
+    meta: { title: "Top Up Success", requireAuth: true },
+  },
+
+  {
     name: "payment-success",
     path: "/pay/success",
     component: () => import("@/views/pay/Success"),
@@ -117,6 +130,13 @@ const routes = [
     path: '/member/:username/setting',
     component: () => import('@/views/user/Setting'),
     meta: { title: 'Setting', requireAuth: true }
+  },
+
+  {
+    name: 'user-bid',
+    path: '/member/:username/bid',
+    component: () => import('@/views/user/Bid'),
+    meta: { title: 'Bid', requireAuth: true }
   },
 
   {

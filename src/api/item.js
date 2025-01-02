@@ -21,6 +21,14 @@ export function post(item) {
   })
 }
 
+export function notify(item) {
+  return request({
+    url: '/item/sendMail',
+    method: 'post',
+    data: item
+  })
+}
+
 
 export function getItem(id) {
   return request({
@@ -69,7 +77,7 @@ export function getRecommendItems(id) {
   })
 }
 
-export function update(item) {
+export function updateItem(item) {
   return request({
     url: '/item/update',
     method: 'post',
