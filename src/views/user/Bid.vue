@@ -662,7 +662,7 @@
 </template>
 
 <script>
-import { getInfoByName, update, topup } from "@/api/user";
+import { getBidPage, update, topup } from "@/api/user";
 import { updateItem } from "@/api/item"; 
 import pagination from "@/components/Pagination/index";
 import { mapGetters } from "vuex";
@@ -689,13 +689,13 @@ export default {
       showTopUp: false,
       pendings: [],
       page: {
-        bided: { current: 1, size: 10, total: 0 },
-        won: { current: 1, size: 10, total: 0 },
-        receive: { current: 1, size: 10, total: 0 },
-        completed: { current: 1, size: 10, total: 0 },
-        pay: { current: 1, size: 10, total: 0 },
-        lost: { current: 1, size: 10, total: 0 },
-        pending: { current: 1, size: 20, total: 0 },
+        bided: { current: 1, size: 5, total: 0 },
+        won: { current: 1, size: 5, total: 0 },
+        receive: { current: 1, size: 5, total: 0 },
+        completed: { current: 1, size: 5, total: 0 },
+        pay: { current: 1, size: 5, total: 0 },
+        lost: { current: 1, size: 5, total: 0 },
+        pending: { current: 1, size: 5, total: 0 },
       },
     };
   },
@@ -753,7 +753,7 @@ export default {
 
     fetchUserById() {
       const activePage = this.page[this.activeName];
-      getInfoByName(
+      getBidPage(
         this.$route.params.username,
         activePage.current,
         activePage.size
@@ -767,69 +767,35 @@ export default {
           this.page[this.activeName].size = data.bidPage.size;
           this.page[this.activeName].total = data.bidPage.total;
         } else if (this.activeName == "lost") {
-          this.bids = data.bidPage.records;
-          var i = 0;
-          this.bids.forEach((item) => {
-            if (new Date(item.endTime) < new Date(this.currentDate)) {
-              if (item.winnerId != this.user.id) {
-                this.losts[i++] = item;
-              }
-            }
-          });
-
-          this.page[this.activeName].current = data.bidPage.current;
-          this.page[this.activeName].size = data.bidPage.size;
-          this.page[this.activeName].total = this.losts.length;
+          this.losts = data.lostPage.records; 
+          this.page[this.activeName].current = data.lostPage.current;
+          this.page[this.activeName].size = data.lostPage.size;
+          this.page[this.activeName].total = data.lostPage.total;
         } else if (this.activeName == "pending") {
-          this.bids = data.bidPage.records;
-          var i = 0;
-          this.bids.forEach((item) => {
-            if (new Date(item.endTime) >= new Date(this.currentDate)) {
-              this.pendings[i++] = item;
-            }
-          });
-
-          this.page[this.activeName].current = data.bidPage.current;
-          this.page[this.activeName].size = data.bidPage.size;
-          this.page[this.activeName].total = this.pendings.length;
+          this.pendings = data.pendingPage.records; 
+          this.page[this.activeName].current = data.pendingPage.current;
+          this.page[this.activeName].size = data.pendingPage.size;
+          this.page[this.activeName].total = data.pendingPage.total;
         } else if (this.activeName == "won") {
           this.wons = data.wonPage.records;
           this.page[this.activeName].current = data.wonPage.current;
           this.page[this.activeName].size = data.wonPage.size;
           this.page[this.activeName].total = data.wonPage.total;
         } else if (this.activeName == "receive") {
-          this.wons = data.wonPage.records;
-          var i = 0;
-          this.wons.forEach((item) => {
-            if (item.isPay == 2 || item.isPay == 1) {
-              this.receives[i++] = item;
-            }
-          });
-          this.page[this.activeName].current = data.wonPage.current;
-          this.page[this.activeName].size = data.wonPage.size;
-          this.page[this.activeName].total = this.receives.length;
+          this.receives = data.receivePage.records; 
+          this.page[this.activeName].current = data.receivePage.current;
+          this.page[this.activeName].size = data.receivePage.size;
+          this.page[this.activeName].total = data.receivePage.total;
         } else if (this.activeName == "completed") {
-          this.wons = data.wonPage.records;
-          var i = 0;
-          this.wons.forEach((item) => {
-            if (item.isPay == 3) {
-              this.completes[i++] = item;
-            }
-          });
-          this.page[this.activeName].current = data.wonPage.current;
-          this.page[this.activeName].size = data.wonPage.size;
-          this.page[this.activeName].total = this.completes.length;
+          this.completes = data.completedPage.records; 
+          this.page[this.activeName].current = data.completedPage.current;
+          this.page[this.activeName].size = data.completedPage.size;
+          this.page[this.activeName].total = data.completedPage.total;
         } else if (this.activeName == "pay") {
-          this.wons = data.wonPage.records;
-          var i = 0;
-          this.wons.forEach((item) => {
-            if (item.isPay == 0) {
-              this.pays[i++] = item;
-            }
-          });
-          this.page[this.activeName].current = data.wonPage.current;
-          this.page[this.activeName].size = data.wonPage.size;
-          this.page[this.activeName].total = this.pays.length;
+          this.pays = data.payPage.records; 
+          this.page[this.activeName].current = data.payPage.current;
+          this.page[this.activeName].size = data.payPage.size;
+          this.page[this.activeName].total = data.payPage.total;
         }
       });
     },

@@ -12,6 +12,17 @@ export function getInfoByName(username, page, size) {
   })
 }
 
+export function getBidPage(username, page, size) {
+  return request({
+    url: '/ums/user/bid' + username,
+    method: 'get',
+    params: {
+      pageNo: page,
+      size: size
+    }
+  })
+}
+
 //User Profile
 export function getInfo() {
   return request({

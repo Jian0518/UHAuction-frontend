@@ -57,6 +57,7 @@
                       >
                         <router-link
                           :to="{ name: 'item-detail', params: { id: item.id } }"
+                          class="has-text-weight-bold is-size-5"
                         >
                           {{ item.title }}
                         </router-link>
@@ -465,7 +466,7 @@ export default {
       delivers: [],
       pendings: [],
       page: {
-        donated: { current: 1, size: 10, total: 0 },
+        donated: { current: 1, size: 5, total: 0 },
         complete: { current: 1, size: 5, total: 0 },
         deliver: { current: 1, size: 5, total: 0 },
         pending: { current: 1, size: 5, total: 0 },
@@ -493,45 +494,31 @@ export default {
         const { data } = res;
         this.topicUser = data.user;
 
-        //this[`${this.activeName}s`] = data.items.records;
         if (this.activeName == "donated") {
           this.items = data.items.records;
           this.page[this.activeName].current = data.items.current;
           this.page[this.activeName].size = data.items.size;
           this.page[this.activeName].total = data.items.total;
         } else if (this.activeName == "complete") {
-          this.items = data.items.records;
-          var i = 0;
-          this.items.forEach((item) => {
-            if (item.isPay == 2 || item.isPay == 3) {
-              this.completes[i++] = item;
-            }
-          });
-          this.page[this.activeName].current = data.items.current;
-          this.page[this.activeName].size = data.items.size;
-          this.page[this.activeName].total = this.completes.length;
+
+          this.completes = data.completes.records;
+          this.page[this.activeName].current = data.completes.current;
+          this.page[this.activeName].size = data.completes.size;
+          this.page[this.activeName].total = data.completes.total;
+
         } else if (this.activeName == "deliver") {
-          this.items = data.items.records;
-          var i = 0;
-          this.items.forEach((item) => {
-            if (item.isPay == 1) {
-              this.delivers[i++] = item;
-            }
-          });
-          this.page[this.activeName].current = data.items.current;
-          this.page[this.activeName].size = data.items.size;
-          this.page[this.activeName].total = this.delivers.length;
+          this.delivers = data.delivers.records;
+          this.page[this.activeName].current = data.delivers.current;
+          this.page[this.activeName].size = data.delivers.size;
+          this.page[this.activeName].total = data.delivers.total;
+
         } else if (this.activeName == "pending") {
-          this.items = data.items.records;
-          var i = 0;
-          this.items.forEach((item) => {
-            if (item.isPay == 0) {
-              this.pendings[i++] = item;
-            }
-          });
-          this.page[this.activeName].current = data.items.current;
-          this.page[this.activeName].size = data.items.size;
-          this.page[this.activeName].total = this.pendings.length;
+
+          this.pendings = data.pendings.records;
+          this.page[this.activeName].current = data.pendings.current;
+          this.page[this.activeName].size = data.pendings.size;
+          this.page[this.activeName].total = data.pendings.total;
+
         }
       });
     },
