@@ -54,14 +54,30 @@
             </div>
 
             <br />
-            <b-taginput
+            <!-- <b-taginput
               v-model="ruleForm.tags"
               class="my-3"
               maxlength="255"
               maxtags="3"
               ellipsis
               placeholder="Please enter at most three categories"
-            />
+            /> -->
+
+            <el-select
+              v-model="ruleForm.tags"
+              class="my-3"
+              multiple
+              placeholder="Please select at most three categories"
+              @change="limitSelection"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="category in categories"
+                :key="category.value"
+                :label="category.label"
+                :value="category.value"
+              />
+            </el-select>
 
             <el-form-item>
               <el-button type="primary" @click="submitForm('ruleForm')"
@@ -77,13 +93,14 @@
 </template>
 
 <script>
-import { post } from "@/api/item"; 
-
+import { post } from "@/api/item";
+import { getCategory } from "@/api/category";
 export default {
   name: "TopicPost",
 
   data() {
     return {
+      categories: [],
       pickerOptions: {
         disabledDate(time) {
           // Disable dates before tomorrow
@@ -118,7 +135,26 @@ export default {
       },
     };
   },
+  mounted() {
+    this.fetchCategory(); // Fetch categories when the component is mounted
+  },
+
   methods: {
+    fetchCategory() {
+      getCategory().then((response) => {
+        const { data } = response;
+        this.categories = data.map((category) => ({
+          value: category.name,
+          label: category.name,
+        }));
+      });
+    },
+    limitSelection() {
+      if (this.ruleForm.tags.length > 3) {
+        this.ruleForm.tags = this.ruleForm.tags.slice(0, 3); // Limit to 3 selections
+        this.$message.warning("You can select at most three categories."); // Optional user feedback
+      }
+    },
     handleUploadSuccess(response, file) {
       // Handle successful upload
       if (response.code === 200) {
@@ -140,7 +176,6 @@ export default {
         this.ruleForm.images.splice(index, 1);
         this.imgUrl.splice(index, 1);
       }
-      
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
