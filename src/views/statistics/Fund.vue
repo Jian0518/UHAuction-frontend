@@ -87,8 +87,7 @@
         </div>
       </el-card>
 
-
-         <el-card
+      <el-card
         shadow="hover"
         :body-style="{ padding: '30px' }"
         class="dashboard-card"
@@ -167,7 +166,7 @@
     </el-col>
 
     <el-col :span="12">
-   <el-card shadow="hover" :body-style="{ padding: '40px' }">
+      <el-card shadow="hover" :body-style="{ padding: '40px' }">
         <canvas
           id="itemsByMonthChart"
           style="max-width: 400px; height: 260px; margin: 0 auto"
@@ -184,9 +183,7 @@
       </el-card>
     </el-col>
 
-    <el-col :span="24">
-      
-    </el-col>
+    <el-col :span="24"> </el-col>
 
     <!-- Collected Fund Modal -->
     <el-dialog :visible.sync="showCollectedFundModal" width="80%" center>
@@ -211,6 +208,9 @@
         </el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
+        <el-button @click="downloadFundCollectedExcel"
+          >Download Excel</el-button
+        >
         <el-button @click="collectedFundModal">Close</el-button>
       </span>
     </el-dialog>
@@ -237,6 +237,7 @@
         <el-table-column prop="type" label="Type"></el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
+        <el-button @click="downloadFundUsedAsExcel">Download Excel</el-button>
         <el-button @click="usedFundModal">Close</el-button>
       </span>
     </el-dialog>
@@ -257,6 +258,7 @@
         ></el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
+       <el-button @click="downloadDonorRankingAsExcel">Download Excel</el-button>
         <el-button @click="donorModal">Close</el-button>
       </span>
     </el-dialog>
@@ -274,6 +276,7 @@
         <el-table-column prop="amount" label="Amount(RM)"></el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
+        <el-button @click="downloadBidderRankingAsExcel">Download Excel</el-button>
         <el-button @click="bidderModal">Close</el-button>
       </span>
     </el-dialog>
@@ -476,6 +479,7 @@ export default {
         },
       });
     },
+
     fetchItemByMonth() {
       getItemByMonth().then((result) => {
         this.itemsByMonth = result.data;
@@ -483,7 +487,77 @@ export default {
         this.renderItemsByMonthChart();
       });
     },
+    downloadFundCollectedExcel() {
+      // Prepare data for Excel
+      const data = this.items.map((item, index) => ({
+        ID: index + 1,
+        Name: this.userNames[item.winnerId] || "Unknown",
+        Item: item.title,
+        Amount: item.highestBid,
+        Date: this.formatDate(item.endTime),
+      }));
 
+      // Create a worksheet and workbook
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Collected Funds");
+
+      // Generate and download Excel file
+      XLSX.writeFile(workbook, "Collected_Funds.xlsx");
+    },
+    downloadFundUsedAsExcel() {
+      const data = this.fund.map((item, index) => ({
+        ID: index + 1,
+        Description: item.description,
+        Amount: item.amount,
+        Date: this.formatDate(item.date),
+        Type: item.type,
+      }));
+
+      // Create a worksheet
+      const worksheet = XLSX.utils.json_to_sheet(data);
+
+      // Create a workbook and append the worksheet
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Fund Used");
+
+      // Generate Excel file and trigger download
+      XLSX.writeFile(workbook, "Fund_Used_Details.xlsx");
+    },
+    downloadDonorRankingAsExcel() {
+      const data = this.donors.map((donor, index) => ({
+        Rank: index + 1,
+        Name: donor.alias,
+        "Amount of Donated Item": donor.amount,
+      }));
+
+      // Create a worksheet
+      const worksheet = XLSX.utils.json_to_sheet(data);
+
+      // Create a workbook and append the worksheet
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Donor Ranking");
+
+      // Generate Excel file and trigger download
+      XLSX.writeFile(workbook, "Donor_Ranking.xlsx");
+    },
+    downloadBidderRankingAsExcel() {
+      const data = this.bidders.map((bidder, index) => ({
+        Rank: index + 1,
+        Name: bidder.alias,
+        "Amount(RM)": bidder.amount,
+      }));
+
+      // Create a worksheet
+      const worksheet = XLSX.utils.json_to_sheet(data);
+
+      // Create a workbook and append the worksheet
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Bidder Ranking");
+
+      // Generate Excel file and trigger download
+      XLSX.writeFile(workbook, "Bidder_Ranking.xlsx");
+    },
     renderItemsByMonthChart() {
       const ctx = document.getElementById("itemsByMonthChart").getContext("2d");
       const labels = this.itemsByMonth.map((item) => item.month);
@@ -535,11 +609,23 @@ export default {
       });
     },
     fetchTrend() {
-      getTrend().then((result) => {
-        this.trend = result.data;
-        this.trendCategory = this.trend[0].name;
-      });
+      getTrend()
+        .then((result) => {
+          if (result.data && result.data.length > 0) {
+            this.trend = result.data;
+            this.trendCategory = this.trend[0].name;
+          } else {
+            this.trend = [];
+            this.trendCategory = "No category available";
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching trend data:", error);
+          this.trend = [];
+          this.trendCategory = "Error fetching data";
+        });
     },
+
     fetchFund() {
       getFund().then((result) => {
         this.fund = result.data;

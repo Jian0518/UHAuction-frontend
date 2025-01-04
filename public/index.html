@@ -7,10 +7,11 @@
     <link rel="icon" href="<%= BASE_URL %>logo.png">
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
-  <script
-    async
-    src="https://js.stripe.com/v3/buy-button.js">
-  </script>
+<!-- Include Stripe.js -->
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+    
+<!-- Include SheetJS -->
+<script async src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   <body>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
