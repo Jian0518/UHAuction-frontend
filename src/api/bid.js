@@ -10,6 +10,16 @@ export function fetchBidsByItemId(item_Id) {
   })
 }
 
+export function getBidder(item_Id) {
+  return request({
+    url: '/bid/bidders',
+    method: 'get',
+    params: {
+      itemid: item_Id
+    }
+  })
+}
+
 export function pushBid(data) {
   return request({
     url: '/bid/add_bid',

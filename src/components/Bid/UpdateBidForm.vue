@@ -9,7 +9,7 @@
             :validateEvent=false
           ></el-input>
           <span v-if="!isValidAmount && localAmount !== ''" class="help is-danger"
-            >Please enter a valid number</span
+            >Please enter a valid number. Your bid must be higher than: ${{item.highestBid}}</span
           >
         </b-field>
         <nav class="level">
@@ -31,12 +31,14 @@
 
 <script>
 import { updateBid } from "@/api/bid";
+import {getItem} from "@/api/item";
 
 export default {
   name: "LvUpdateBidsForm",
   data() {
     return {
       isLoading: false,
+      item: null,
       localAmount: this.amount // Initialize local data property based on the prop
     };
   },
@@ -45,6 +47,10 @@ export default {
       // Check if localAmount is a valid number
       return !isNaN(parseFloat(this.localAmount)) && isFinite(this.localAmount);
     }
+  },
+  async mounted() {
+    this.item = await getItem(this.slug);
+    this.item = this.item.data.topic; 
   },
   props: {
     userId: {
@@ -62,23 +68,24 @@ export default {
     itemId: {
       type: String, 
       default: null,
+    },
+    slug: {
+      type: String, 
+      default: null,
     }
   },
+
+ 
   methods: {
     async onSubmit() {
       this.isLoading = true;
       try {
         let itemData = {};
-        console.log(this.localAmount);
-        console.log(this.userId);
         itemData["amount"] = this.localAmount; // Use localAmount instead of amount
         itemData["userId"] = this.userId;
         itemData["id"] = this.bidId; 
         itemData["itemId"] = this.itemId;
-
         console.log("Item data: " + itemData.amount)
-        console.log(itemData.userId)
-        console.log("Item id" + itemData.itemId)
         await updateBid(itemData);
         this.$emit("loadBids", this.slug);
         this.$message.success("Update successfully");

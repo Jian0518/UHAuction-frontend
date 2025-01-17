@@ -1,3 +1,7 @@
+/**
+ * request interceptor
+ * sets up an Axios instance for making HTTP requests
+ */
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
@@ -8,22 +12,18 @@ const service = axios.create({
   // public interface, url = base url + request url
   baseURL: process.env.VUE_APP_SERVER_URL,
 
-  // baseURL: 'https://api.example.com',
   // The timeout unit is ms. A timeout of 5s is set here.
   timeout: 5 * 1000
 })
 
 // 2.request interceptor
+// modify request configuration before sending the request
 service.interceptors.request.use(
   config => {
-    // Some processing before sending the request, data conversion, 
-    // configuring request headers, setting tokens, setting loading, etc., add them according to needs
-    // when using tokens,  need to introduce the cookie method or use localStorage  
-    // js-cookie is recommended.
+    // check if a token is available in the application's state
     if (store.getters.token) {
-      // config.params = {'token': token}    
-      // config.headers.token = token;      
-      // bearer：w3c standardize
+      // adds an authorization header to the request
+      // Bearer token: a common way for passing authentication tokens in HTTP requests
       config.headers['Authorization'] = 'Bearer ' + getToken()
     }
     return config
@@ -35,12 +35,15 @@ service.interceptors.request.use(
   }
 )
 
-// Set cross-domain and set access permissions to allow cookie information to be carried across domains
-// can be turned off using JWT
+// when set to true, it allows the browser to include credentials 
+// (cookies, HTTP authentication, etc.) in requests to a different domain
+// by setting this to false, we prevent unauthorized access to resources on another domain
 service.defaults.withCredentials = false
 
+
+// will be executed whenever a response is received from a request made by this Axios instance
 service.interceptors.response.use(
-  // Some common processing after receiving the response data and successfully, closing loading
+
   response => {
     const res = response.data
     // wrong if customize code is not 200

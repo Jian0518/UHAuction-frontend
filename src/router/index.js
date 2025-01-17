@@ -1,3 +1,10 @@
+/**
+ * specifies how different URLs map to specific components
+ * path: The URL path for the route
+ * name: A unique identifier for the route
+ * component: The component to be rendered when the route is accessed
+ * meta: title, authentication requirements, etc.
+ */
 import Vue from "vue";
 import VueRouter from "vue-router";
 
@@ -5,13 +12,13 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
     name: "Home",
+    path: "/",
     component: () => import("@/views/Home"),
   },
   {
-    path: "/register",
     name: "register",
+    path: "/register",
     component: () => import("@/views/auth/Register"),
     meta: { title: "Register" },
   },
@@ -52,7 +59,8 @@ const routes = [
   {
     name: "Im",
     path: "/chat/Im",
-    component: () => import("@/views/Im/Im")
+    component: () => import("@/views/Im/Im"),
+    meta: { title: "Chat" }
   },
 
   {

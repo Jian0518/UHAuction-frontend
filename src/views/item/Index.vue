@@ -248,8 +248,7 @@ export default {
           if(item.isEnd==0){
             setEnd(item);
           }
-          console.log("AAAAAAAAAAAAAAA")
-          console.log(item)
+
           if(item.isNotify==0){
             notify(item);
           }

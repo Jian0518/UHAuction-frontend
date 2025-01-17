@@ -56,8 +56,16 @@
         </nav>
       </el-card>
       <!-- Bids and comments -->
-      <lv-bids :slug="topic.id" v-if="countdownTimer != 'Ended'" />
+      <lv-bids 
+        :slug="topic.id" 
+        v-if="countdownTimer != 'Ended'" 
+        @updateRanking="$refs.bidderRank.refreshRanking()"
+      />
       <lv-winner-item :userId="winner.id" :amount="winner.amount" :itemId="topic.id" :payLink="winner.payLink" :isPay="winner.isPay" v-if="countdownTimer == 'Ended'" />
+      <LVBidderRank 
+        ref="bidderRank" 
+        :slug="topic.id"
+      />
       <lv-comments :slug="topic.id" />
     </div>
     <div class="column">
@@ -76,10 +84,11 @@ import Recommend from "@/views/item/Recommend";
 import LvComments from "@/components/Comment/Comments";
 import LvBids from "@/components/Bid/Bids";
 import LvWinnerItem from "@/components/Winner/WinnerItem";
+import LVBidderRank from "@/components/Rank/BidderRank";
 
 export default {
   name: "TopicDetail",
-  components: { Author, Recommend, LvComments, LvBids, LvWinnerItem },
+  components: { Author, Recommend, LvComments, LvBids, LvWinnerItem, LVBidderRank },
   computed: {
     ...mapGetters(["token", "user"]),
   },

@@ -7,9 +7,11 @@ const state = {
 };
 
 const mutations = {
+  // update token in the state
   SET_TOKEN_STATE: (state, token) => {
     state.token = token;
   },
+  // update user in the state
   SET_USER_STATE: (state, user) => {
     state.user = user;
   },

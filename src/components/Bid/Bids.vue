@@ -1,42 +1,29 @@
 <template>
   <section class="box comments">
     <hr />
-    <h3 class="title is-5">Silent Bid</h3>
+    <h3 class="title is-5">Place a Bid</h3>
 
     <template v-if="token">
-      <lv-bids-form :slug="slug" v-if="showBidsForm" />
-      <lv-update-bids-form
-        :userId="userId"
-        :amount="amount"
-        :bidId="bidId"
-        :itemId="itemId"
-        v-else
+      <lv-bids-form 
+        :slug="slug" 
+        @updateRanking="$emit('updateRanking')"
       />
     </template>
+    <div v-else class="empty-state">
+      <i><b>Please login to place a bid</b></i>
+    </div>
   </section>
 </template>
  
 
 <script>
 import { mapGetters } from "vuex";
-import { fetchBidsByItemId } from "@/api/bid";
 import LvBidsForm from "./BidsForm";
-import LvUpdateBidsForm from "./UpdateBidForm.vue";
 
 export default {
   name: "LvBids",
   components: {
     LvBidsForm,
-    LvUpdateBidsForm,
-  },
-  data() {
-    return {
-      bids: [],
-      amount: "",
-      userId: "",
-      bidId: "",
-      itemId: "",
-    };
   },
   props: {
     slug: {
@@ -45,30 +32,20 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["token", "user"]),
-    showBidsForm() {
-      return !this.bids.some((bid) => bid.userId === this.user.id);
-    },
+    ...mapGetters(["token"]),
   },
-  async mounted() {
-    await this.fetchBids(this.slug);
-  },
-  methods: {
-    async fetchBids(item_id) {
-      console.log("Item id =" + item_id);
-      fetchBidsByItemId(item_id).then((response) => {
-        const { data } = response;
-        this.bids = data;
-        this.bids.forEach((bid) => {
-          if (bid.userId === this.user.id) {
-            this.userId = bid.userId;
-            this.amount = bid.amount;
-            this.bidId = bid.id;
-            this.itemId = bid.itemId;
-          }
-        });
-      });
-    },
-  },
+  emits: ['updateRanking']
 };
 </script>
+
+<style scoped>
+.empty-state {
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+</style>

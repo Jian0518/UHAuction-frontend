@@ -46,7 +46,7 @@
                 v-if="bids.length === 0"
                 class="notification is-warning has-text-centered"
               >
-                No item
+              <i><b>No item</b></i>
               </div>
 
               <div v-else class="topicUser-info">
@@ -169,7 +169,7 @@
                 v-if="pays.length === 0"
                 class="notification is-warning has-text-centered"
               >
-                No item
+              <i><b>No item</b></i>
               </div>
 
               <div v-else class="topicUser-info">
@@ -288,7 +288,7 @@
                 v-if="receives.length === 0"
                 class="notification is-warning has-text-centered"
               >
-                No item
+              <i><b>No item</b></i>
               </div>
 
               <div v-else class="topicUser-info">
@@ -376,7 +376,7 @@
                 v-if="pendings.length === 0"
                 class="notification is-warning has-text-centered"
               >
-                No item
+              <i><b>No item</b></i>
               </div>
 
               <div v-else class="topicUser-info">
@@ -468,7 +468,7 @@
                 v-if="completes.length === 0"
                 class="notification is-warning has-text-centered"
               >
-                No item
+              <i><b>No item</b></i>
               </div>
 
               <div v-else class="topicUser-info">
@@ -557,7 +557,7 @@
                 v-if="losts.length === 0"
                 class="notification is-warning has-text-centered"
               >
-                No item
+              <i><b>No item</b></i>
               </div>
 
               <div v-else class="topicUser-info">

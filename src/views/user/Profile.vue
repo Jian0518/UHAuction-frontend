@@ -4,10 +4,7 @@
       <div class="column is-one-quarter">
         <el-card shadow="never">
           <div slot="header" class="has-text-centered">
-            <el-avatar
-              :size="64"
-              :src="`https://cn.gravatar.com/avatar/${topicUser.id}?s=164&d=monsterid`"
-            />
+            <el-avatar :size="64" :src="`https://cn.gravatar.com/avatar/${topicUser.id}?s=164&d=monsterid`" />
             <p class="mt-3">{{ topicUser.alias || topicUser.username }}</p>
           </div>
           <div>
@@ -28,37 +25,24 @@
         <el-card class="box-card content" shadow="never">
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="All Donated Items" name="donated">
-              <div v-if="items.length === 0">No item</div>
+              <div v-if="items.length === 0" class="notification is-warning has-text-centered">
+                <i><b>No item</b></i>
+              </div>
 
               <div v-else class="topicUser-info">
-                <article
-                  v-for="(item, index) in items"
-                  :key="index"
-                  class="media box"
-                >
+                <article v-for="(item, index) in items" :key="index" class="media box">
                   <!-- <div class="media-left"> -->
-                  <router-link
-                    :to="{ name: 'item-detail', params: { id: item.id } }"
-                  >
+                  <router-link :to="{ name: 'item-detail', params: { id: item.id } }">
                     <figure class="image is-96x96">
-                      <img
-                        :src="`http://localhost:9000/uhauction/item/img/${item.cover}`"
-                      />
+                      <img :src="`http://localhost:9000/uhauction/item/img/${item.cover}`" />
                     </figure>
                   </router-link>
                   <!-- </div> -->
                   <div class="media-content">
                     <div class="content ellipsis is-ellipsis-1">
-                      <el-tooltip
-                        class="item"
-                        effect="dark"
-                        :content="item.title"
-                        placement="top"
-                      >
-                        <router-link
-                          :to="{ name: 'item-detail', params: { id: item.id } }"
-                          class="has-text-weight-bold is-size-5"
-                        >
+                      <el-tooltip class="item" effect="dark" :content="item.title" placement="top">
+                        <router-link :to="{ name: 'item-detail', params: { id: item.id } }"
+                          class="has-text-weight-bold is-size-5">
                           {{ item.title }}
                         </router-link>
                       </el-tooltip>
@@ -71,17 +55,12 @@
                           }}
                         </span>
                         <div v-if="token">
-                          <div
-                            v-if="topicUser.username === user.username"
-                            class="level"
-                          >
+                          <div v-if="topicUser.username === user.username" class="level">
                             <div class="level-item mr-1">
-                              <router-link
-                                :to="{
-                                  name: 'item-edit',
-                                  params: { id: item.id },
-                                }"
-                              >
+                              <router-link :to="{
+                                name: 'item-edit',
+                                params: { id: item.id },
+                              }">
                                 <span class="tag is-warning">Edit</span>
                               </router-link>
                             </div>
@@ -96,50 +75,30 @@
                     </nav>
                   </div>
 
-                  <div
-                    v-if="topicUser.username === user.username"
-                    class="level"
-                  >
+                  <div v-if="topicUser.username === user.username" class="level">
                     <div class="level-item mr-2">
-                      <router-link
-                        :to="{
-                          name: 'item-detail',
-                          params: { id: item.id },
-                        }"
-                      >
-                        <span
-                          v-if="item.isPay == 0"
-                          :href="item.payLink"
-                          class="button is-info is-light fixed-width-button is-light"
-                        >
+                      <router-link :to="{
+                        name: 'item-detail',
+                        params: { id: item.id },
+                      }">
+                        <span v-if="item.isPay == 0" :href="item.payLink"
+                          class="button is-info is-light fixed-width-button is-light">
                           Pending
                         </span>
                       </router-link>
 
-                      <b-button
-                        v-if="item.isPay == 1"
-                        class="button is-success fixed-width-button is-light"
-                        tag="router-link"
-                        :to="{ path: '/winner/info/' + item.id }"
-                      >
+                      <b-button v-if="item.isPay == 1" class="button is-success fixed-width-button is-light"
+                        tag="router-link" :to="{ path: '/winner/info/' + item.id }">
                         To Deliver
                       </b-button>
 
-                      <b-button
-                        v-if="item.isPay == 2"
-                        class="button is-warning fixed-width-button is-light"
-                        tag="router-link"
-                        :to="{ path: '/winner/info/' + item.id }"
-                      >
+                      <b-button v-if="item.isPay == 2" class="button is-warning fixed-width-button is-light"
+                        tag="router-link" :to="{ path: '/winner/info/' + item.id }">
                         Delivered
                       </b-button>
 
-                      <b-button
-                        v-if="item.isPay == 3"
-                        class="button is-black is-primary fixed-width-button is-light"
-                        tag="router-link"
-                        :to="{ path: '/winner/info/' + item.id }"
-                      >
+                      <b-button v-if="item.isPay == 3" class="button is-black is-primary fixed-width-button is-light"
+                        tag="router-link" :to="{ path: '/winner/info/' + item.id }">
                         Completed
                       </b-button>
                     </div>
@@ -147,64 +106,34 @@
                 </article>
               </div>
 
-              <pagination
-                v-show="page[activeName].total > 0"
-                class="mt-5"
-                :total="page[activeName].total"
-                :page.sync="page[activeName].current"
-                :limit.sync="page[activeName].size"
-                @pagination="fetchUserById"
-              />
+              <pagination v-show="page[activeName].total > 0" class="mt-5" :total="page[activeName].total"
+                :page.sync="page[activeName].current" :limit.sync="page[activeName].size" @pagination="fetchUserById" />
             </el-tab-pane>
 
-            <el-tab-pane
-              label="To Deliver"
-              name="deliver"
-              v-if="topicUser.username === user.username"
-            >
-              <div
-                v-if="delivers.length === 0"
-                class="notification is-warning has-text-centered"
-              >
-                No item
+            <el-tab-pane label="To Deliver" name="deliver" v-if="topicUser.username === user.username">
+              <div v-if="delivers.length === 0" class="notification is-warning has-text-centered">
+                <i><b>No item</b></i>
               </div>
 
               <div v-else class="topicUser-info">
-                <article
-                  v-for="(item, index) in delivers"
-                  :key="index"
-                  class="media box"
-                >
-                  <router-link
-                    :to="{ name: 'item-detail', params: { id: item.id } }"
-                  >
+                <article v-for="(item, index) in delivers" :key="index" class="media box">
+                  <router-link :to="{ name: 'item-detail', params: { id: item.id } }">
                     <figure class="media-left">
                       <p class="image is-96x96">
-                        <img
-                          :src="`http://localhost:9000/uhauction/item/img/${item.cover}`"
-                        />
+                        <img :src="`http://localhost:9000/uhauction/item/img/${item.cover}`" />
                       </p>
                     </figure>
                   </router-link>
                   <div class="media-content">
                     <div class="content ellipsis is-ellipsis-1">
-                      <el-tooltip
-                        class="item"
-                        effect="dark"
-                        :content="item.title"
-                        placement="top"
-                      >
-                        <router-link
-                          :to="{ name: 'item-detail', params: { id: item.id } }"
-                          class="has-text-weight-bold is-size-5"
-                        >
+                      <el-tooltip class="item" effect="dark" :content="item.title" placement="top">
+                        <router-link :to="{ name: 'item-detail', params: { id: item.id } }"
+                          class="has-text-weight-bold is-size-5">
                           {{ item.title }}
                         </router-link>
                       </el-tooltip>
                     </div>
-                    <nav
-                      class="level has-text-danger is-size-6 has-text-weight-bold"
-                    >
+                    <nav class="level has-text-danger is-size-6 has-text-weight-bold">
                       <div class="level-left">
                         <span class="mr-1"> Bid: RM{{ item.highestBid }} </span>
                       </div>
@@ -221,16 +150,10 @@
                     </nav>
                   </div>
                   <div v-if="token" class="media-right">
-                    <div
-                      v-if="topicUser.username === user.username"
-                      class="level"
-                    >
+                    <div v-if="topicUser.username === user.username" class="level">
                       <div class="level-item mr-2">
-                        <b-button
-                          class="button is-success is-outlined fixed-width-button"
-                          tag="router-link"
-                          :to="{ path: '/winner/info/' + item.id }"
-                        >
+                        <b-button class="button is-success is-outlined fixed-width-button" tag="router-link"
+                          :to="{ path: '/winner/info/' + item.id }">
                           Deliver
                         </b-button>
                       </div>
@@ -239,64 +162,34 @@
                 </article>
               </div>
 
-              <pagination
-                v-show="page[activeName].total > 0"
-                class="mt-5"
-                :total="page[activeName].total"
-                :page.sync="page[activeName].current"
-                :limit.sync="page[activeName].size"
-                @pagination="fetchUserById"
-              />
+              <pagination v-show="page[activeName].total > 0" class="mt-5" :total="page[activeName].total"
+                :page.sync="page[activeName].current" :limit.sync="page[activeName].size" @pagination="fetchUserById" />
             </el-tab-pane>
 
-            <el-tab-pane
-              label="Pending"
-              name="pending"
-              v-if="topicUser.username === user.username"
-            >
-              <div
-                v-if="pendings.length === 0"
-                class="notification is-warning has-text-centered"
-              >
-                No item
+            <el-tab-pane label="Pending" name="pending" v-if="topicUser.username === user.username">
+              <div v-if="pendings.length === 0" class="notification is-warning has-text-centered">
+                <i><b>No item</b></i>
               </div>
 
               <div v-else class="topicUser-info">
-                <article
-                  v-for="(item, index) in pendings"
-                  :key="index"
-                  class="media box"
-                >
-                  <router-link
-                    :to="{ name: 'item-detail', params: { id: item.id } }"
-                  >
+                <article v-for="(item, index) in pendings" :key="index" class="media box">
+                  <router-link :to="{ name: 'item-detail', params: { id: item.id } }">
                     <figure class="media-left">
                       <p class="image is-96x96">
-                        <img
-                          :src="`http://localhost:9000/uhauction/item/img/${item.cover}`"
-                        />
+                        <img :src="`http://localhost:9000/uhauction/item/img/${item.cover}`" />
                       </p>
                     </figure>
                   </router-link>
                   <div class="media-content">
                     <div class="content ellipsis is-ellipsis-1">
-                      <el-tooltip
-                        class="item"
-                        effect="dark"
-                        :content="item.title"
-                        placement="top"
-                      >
-                        <router-link
-                          :to="{ name: 'item-detail', params: { id: item.id } }"
-                          class="has-text-weight-bold is-size-5"
-                        >
+                      <el-tooltip class="item" effect="dark" :content="item.title" placement="top">
+                        <router-link :to="{ name: 'item-detail', params: { id: item.id } }"
+                          class="has-text-weight-bold is-size-5">
                           {{ item.title }}
                         </router-link>
                       </el-tooltip>
                     </div>
-                    <nav
-                      class="level has-text-danger is-size-6 has-text-weight-bold"
-                    >
+                    <nav class="level has-text-danger is-size-6 has-text-weight-bold">
                       <div class="level-left">
                         <span class="mr-1"> Bid: RM**** </span>
                       </div>
@@ -313,23 +206,14 @@
                     </nav>
                   </div>
                   <div v-if="token" class="media-right">
-                    <div
-                      v-if="topicUser.username === user.username"
-                      class="level"
-                    >
+                    <div v-if="topicUser.username === user.username" class="level">
                       <div class="level-item mr-2">
-                        <router-link
-                          :to="{
-                            name: 'item-detail',
-                            params: { id: item.id },
-                          }"
-                        >
-                          <b-button
-                            v-if="item.isPay == 0"
-                            :href="item.payLink"
-                            outlined
-                            class="button is-info is-outlined fixed-width-button"
-                          >
+                        <router-link :to="{
+                          name: 'item-detail',
+                          params: { id: item.id },
+                        }">
+                          <b-button v-if="item.isPay == 0" :href="item.payLink" outlined
+                            class="button is-info is-outlined fixed-width-button">
                             Pending
                           </b-button>
                         </router-link>
@@ -339,64 +223,34 @@
                 </article>
               </div>
 
-              <pagination
-                v-show="page[activeName].total > 0"
-                class="mt-5"
-                :total="page[activeName].total"
-                :page.sync="page[activeName].current"
-                :limit.sync="page[activeName].size"
-                @pagination="fetchUserById"
-              />
+              <pagination v-show="page[activeName].total > 0" class="mt-5" :total="page[activeName].total"
+                :page.sync="page[activeName].current" :limit.sync="page[activeName].size" @pagination="fetchUserById" />
             </el-tab-pane>
 
-            <el-tab-pane
-              label="Completed"
-              name="complete"
-              v-if="topicUser.username === user.username"
-            >
-              <div
-                v-if="completes.length === 0"
-                class="notification is-warning has-text-centered"
-              >
-                No item
+            <el-tab-pane label="Completed" name="complete" v-if="topicUser.username === user.username">
+              <div v-if="completes.length === 0" class="notification is-warning has-text-centered">
+                <i><b>No item</b></i>
               </div>
 
               <div v-else class="topicUser-info">
-                <article
-                  v-for="(item, index) in completes"
-                  :key="index"
-                  class="media box"
-                >
-                  <router-link
-                    :to="{ name: 'item-detail', params: { id: item.id } }"
-                  >
+                <article v-for="(item, index) in completes" :key="index" class="media box">
+                  <router-link :to="{ name: 'item-detail', params: { id: item.id } }">
                     <figure class="media-left">
                       <p class="image is-96x96">
-                        <img
-                          :src="`http://localhost:9000/uhauction/item/img/${item.cover}`"
-                        />
+                        <img :src="`http://localhost:9000/uhauction/item/img/${item.cover}`" />
                       </p>
                     </figure>
                   </router-link>
                   <div class="media-content">
                     <div class="content ellipsis is-ellipsis-1">
-                      <el-tooltip
-                        class="item"
-                        effect="dark"
-                        :content="item.title"
-                        placement="top"
-                      >
-                        <router-link
-                          :to="{ name: 'item-detail', params: { id: item.id } }"
-                          class="has-text-weight-bold is-size-5"
-                        >
+                      <el-tooltip class="item" effect="dark" :content="item.title" placement="top">
+                        <router-link :to="{ name: 'item-detail', params: { id: item.id } }"
+                          class="has-text-weight-bold is-size-5">
                           {{ item.title }}
                         </router-link>
                       </el-tooltip>
                     </div>
-                    <nav
-                      class="level has-text-danger is-size-6 has-text-weight-bold"
-                    >
+                    <nav class="level has-text-danger is-size-6 has-text-weight-bold">
                       <div class="level-left">
                         <span class="mr-1"> Bid: RM{{ item.highestBid }} </span>
                       </div>
@@ -413,16 +267,10 @@
                     </nav>
                   </div>
                   <div v-if="token" class="media-right">
-                    <div
-                      v-if="topicUser.username === user.username"
-                      class="level"
-                    >
+                    <div v-if="topicUser.username === user.username" class="level">
                       <div class="level-item mr-2">
-                        <b-button
-                          class="button is-primary is-outlined fixed-width-button"
-                          tag="router-link"
-                          :to="{ path: '/winner/info/' + item.id }"
-                        >
+                        <b-button class="button is-primary is-outlined fixed-width-button" tag="router-link"
+                          :to="{ path: '/winner/info/' + item.id }">
                           Completed
                         </b-button>
                       </div>
@@ -431,14 +279,8 @@
                 </article>
               </div>
 
-              <pagination
-                v-show="page[activeName].total > 0"
-                class="mt-5"
-                :total="page[activeName].total"
-                :page.sync="page[activeName].current"
-                :limit.sync="page[activeName].size"
-                @pagination="fetchUserById"
-              />
+              <pagination v-show="page[activeName].total > 0" class="mt-5" :total="page[activeName].total"
+                :page.sync="page[activeName].current" :limit.sync="page[activeName].size" @pagination="fetchUserById" />
             </el-tab-pane>
           </el-tabs>
         </el-card>
@@ -549,8 +391,10 @@ export default {
 
 <style scoped>
 .fixed-width-button {
-  width: 120px; /* Set the desired width */
+  width: 120px;
+  /* Set the desired width */
   height: 35px;
-  text-align: center; /* Center the text inside the button */
+  text-align: center;
+  /* Center the text inside the button */
 }
 </style>
