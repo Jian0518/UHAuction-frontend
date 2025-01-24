@@ -59,5 +59,18 @@ export function update(user) {
   })
 }
 
+export function resetPassword(email) {
+  return request({
+    url: '/ums/user/resetpass',
+    method: 'post',
+    params: { email: email }
+  })
+}
 
-
+export function changePassword(data) {
+  return request({
+    url: '/ums/user/changepass',
+    method: 'post',
+    data: data
+  })
+}
