@@ -13,7 +13,7 @@ const service = axios.create({
   baseURL: process.env.VUE_APP_SERVER_URL,
 
   // The timeout unit is ms. A timeout of 5s is set here.
-  timeout: 5 * 1000
+  timeout: 30 * 1000
 })
 
 // 2.request interceptor

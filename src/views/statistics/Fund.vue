@@ -560,7 +560,7 @@ export default {
     },
     renderItemsByMonthChart() {
       const ctx = document.getElementById("itemsByMonthChart").getContext("2d");
-      const labels = this.itemsByMonth.map((item) => item.month);
+      const labels = this.itemsByMonth.map((item) => item.month_year);
       const data = this.itemsByMonth.map((item) => item.amount);
       new Chart(ctx, {
         type: "bar",
@@ -584,7 +584,7 @@ export default {
             },
             title: {
               display: true,
-              text: "Items Donated by Month in 2024",
+              text: "Items Donated by Month",
               font: {
                 size: 18,
               },
@@ -742,7 +742,7 @@ export default {
     },
     renderFundMonthChart() {
       const ctx = document.getElementById("fundMonthChart").getContext("2d");
-      const labels = this.fundMonth.map((item) => item.month);
+      const labels = this.fundMonth.map((item) => item.month_year);
       const data = this.fundMonth.map((item) => item.amount);
       new Chart(ctx, {
         type: "line",
@@ -750,7 +750,7 @@ export default {
           labels: labels,
           datasets: [
             {
-              label: "Funds Collected by Month",
+              label: "Funds Collected",
               data: data,
               borderColor: "#36A2EB",
               fill: false,
@@ -765,7 +765,7 @@ export default {
             },
             title: {
               display: true,
-              text: "Funds Collected by Month in 2024",
+              text: "Funds Collected by Month",
               font: {
                 size: 18,
               },

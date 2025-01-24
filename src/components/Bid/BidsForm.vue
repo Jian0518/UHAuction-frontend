@@ -102,6 +102,7 @@ export default {
         }
         
       } catch (e) {
+        this.$emit("updateRanking");
         this.$buefy.toast.open({
           message: `Cannot bid this item. ${e}`,
           type: "is-danger",
