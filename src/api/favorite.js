@@ -20,3 +20,10 @@ export function getFavoriteItem(username, page, size) {
     }
   })
 }
+
+export function removeFavorite(userId,itemId){
+  return request({
+    url: `/favorite/remove/${userId}/${itemId}`,
+    method: 'delete'
+  })
+}

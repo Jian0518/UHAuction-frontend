@@ -16,11 +16,13 @@
       </template>
       <template slot="start">
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
-          🌐 Home
+          <img src="@/assets/image/home.png" alt="Logout" style="width: 20px; height: 20px; margin-right: 5px;">
+          Home
         </b-navbar-item>
 
         <b-navbar-item tag="router-link" :to="{ path: '/statistics/fund' }">
-          📈 Dashboard
+          <img src="@/assets/image/dashboard.png" alt="Logout" style="width: 20px; height: 20px; margin-right: 5px;">
+           Dashboard
         </b-navbar-item>
       </template>
 
@@ -73,7 +75,8 @@
             tag="router-link"
             :to="{ path: `/member/${user.username}/home` }"
           >
-            🎀 My Items
+          <img src="@/assets/image/item.png" alt="Logout" style="width: 20px; height: 20px; margin-right: 5px;">
+             My Items
           </b-navbar-item>
           <hr class="dropdown-divider" />
 
@@ -81,7 +84,8 @@
             tag="router-link"
             :to="{ path: `/member/${user.username}/bid` }"
           >
-            🎖️My Bids
+          <img src="@/assets/image/bid.png" alt="Logout" style="width: 20px; height: 20px; margin-right: 5px;">
+             My Bids
           </b-navbar-item>
           <hr class="dropdown-divider" />
 
@@ -89,7 +93,8 @@
             tag="router-link"
             :to="{ path: `/chat/Im` }"
           >
-            🗯️Chat
+          <img src="@/assets/image/chat.png" alt="Logout" style="width: 20px; height: 20px; margin-right: 5px;">
+            Chat
           </b-navbar-item>
           <hr class="dropdown-divider" />
 
@@ -97,7 +102,8 @@
             tag="router-link"
             :to="{ path: `/member/${user.username}/favorite` }"
           >
-            ⭐ Favourite List
+          <img src="@/assets/image/favorite.png" alt="Logout" style="width: 20px; height: 20px; margin-right: 5px;">
+             Favourite List
           </b-navbar-item>
           <hr class="dropdown-divider" />
 
@@ -105,11 +111,15 @@
             tag="router-link"
             :to="{ path: `/member/${user.username}/setting` }"
           >
-            ⚙ Setting
+          <img src="@/assets/image/setting.png" alt="Logout" style="width: 20px; height: 20px; margin-right: 5px;">
+             Setting
           </b-navbar-item>
           <hr class="dropdown-divider" />
 
-          <b-navbar-item tag="a" @click="logout"> 🚪 Logout </b-navbar-item>
+          <b-navbar-item tag="a" @click="logout">
+            <img src="@/assets/image/logout.png" alt="Logout" style="width: 20px; height: 20px; margin-right: 5px;">
+            Logout
+          </b-navbar-item>
         </b-navbar-dropdown>
       </template>
     </b-navbar>

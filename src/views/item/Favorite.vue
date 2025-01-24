@@ -83,7 +83,8 @@
 </template>
 
 <script>
-import { getFavoriteItem } from "@/api/favorite";
+import { getFavoriteItem, removeFavorite } from "@/api/favorite";
+import { mapGetters } from "vuex";
 
 export default {
   name: "ShoppingCart",
@@ -96,6 +97,9 @@ export default {
   created() {
     this.fetchList();
   },
+  computed: {
+    ...mapGetters(["user"]),
+  },
   methods: {
     fetchList() {
       getFavoriteItem(this.$route.params.username).then((response) => {
@@ -105,10 +109,48 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    deleteSelected() {
-      // Implement the delete function here
-      console.log("Delete selected items: ", this.multipleSelection);
-    },
+    async deleteSelected() {
+      try {
+        // Show confirmation dialog
+        await this.$confirm(
+          'Are you sure you want to remove these items from favorites?',
+          'Warning',
+          {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning'
+          }
+        );
+
+        // Create an array of promises for all delete operations
+        const deletePromises = this.multipleSelection.map(item => 
+          removeFavorite(this.user.id, item.id)
+        );
+
+        // Wait for all delete operations to complete
+        await Promise.all(deletePromises);
+
+        // Show success message
+        this.$message({
+          type: 'success',
+          message: 'Items removed from favorites successfully!'
+        });
+
+        // Refresh the list
+        this.fetchList();
+        
+        // Clear selection
+        this.multipleSelection = [];
+      } catch (error) {
+        // Handle user cancellation or error
+        if (error !== 'cancel') {
+          this.$message({
+            type: 'error',
+            message: 'Failed to remove items from favorites: ' + error.message
+          });
+        }
+      }
+    }
   },
 };
 </script>
