@@ -9,8 +9,10 @@
             :disabled="isLoading"
             :validateEvent="false"
           ></el-input>
-          <span v-if="!isValidAmount && amount !== ''"  class="help is-danger"
-            >Please enter a valid number. Your bid must be higher than: ${{item.highestBid}}</span
+          <span v-if="!isValidAmount && amount !== ''" class="help is-danger"
+            >Please enter a valid number. Your bid must be higher than: ${{
+              item.highestBid
+            }}</span
           >
         </b-field>
         <nav class="level">
@@ -34,7 +36,8 @@
 import { fetchBidsByItemId } from "@/api/bid";
 import { mapGetters } from "vuex";
 import { pushBid, updateBid } from "@/api/bid";
-import {getItem} from "@/api/item";
+import { getItem } from "@/api/item";
+
 export default {
   name: "LvBidsForm",
   data() {
@@ -46,21 +49,31 @@ export default {
       bids: [],
       userId: "",
       bidId: "",
+      socket: null,
     };
   },
   computed: {
     ...mapGetters(["token", "user"]),
     isValidAmount() {
       // Check if amount is a valid number
-      return !isNaN(parseFloat(this.amount)) && isFinite(this.amount) && this.amount > this.item.highestBid;
+      return (
+        !isNaN(parseFloat(this.amount)) &&
+        isFinite(this.amount) &&
+        this.amount > this.item.highestBid
+      );
     },
   },
   async mounted() {
-    this.item = await getItem(this.slug);
-    this.item = this.item.data.topic;
-    this.msg = `Current Highest Bid: $${this.item.highestBid}`;
+    this.connectWebSocket();
+    await this.updateItemData();
     await this.fetchBids(this.slug);
   },
+  beforeDestroy() {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      this.socket.close();
+    }
+  },
+
   props: {
     slug: {
       type: String,
@@ -68,7 +81,30 @@ export default {
     },
   },
   methods: {
-    async fetchBids(itemId){
+    connectWebSocket() {
+      this.socket = new WebSocket("ws://localhost:8000/ws/bids");
+
+      this.socket.onopen = () => {
+        console.log("WebSocket connected");
+      };
+
+      this.socket.onmessage = (event) => {
+        this.updateItemData();
+        this.fetchBids(this.slug);
+
+        this.$emit("updateRanking");
+      };
+
+      this.socket.onerror = (error) => {
+        console.error("WebSocket Error: ", error);
+      };
+
+      this.socket.onclose = () => {
+        console.warn("WebSocket closed. Reconnecting...");
+        setTimeout(this.connectWebSocket, 5000);
+      };
+    },
+    async fetchBids(itemId) {
       fetchBidsByItemId(itemId).then((response) => {
         const { data } = response;
         this.bids = data;
@@ -80,33 +116,45 @@ export default {
         });
       });
     },
+    async updateItemData() {
+      try {
+        const response = await getItem(this.slug);
+        this.item = response.data.topic;
+        this.msg = `Current Highest Bid: $${this.item.highestBid}`;
+      } catch (e) {
+        this.$buefy.toast.open({
+          message: `Failed to load item data: ${e.message}`,
+          type: "is-danger",
+        });
+      }
+    },
     async onSubmit() {
       this.isLoading = true;
       try {
-        let itemData = {};
-        itemData["amount"] = this.amount;
-        itemData["item_id"] = this.slug;
-        if(!this.bids.some((bid) => bid.userId === this.user.id)){
+        let itemData = {
+          amount: this.amount,
+          item_id: this.slug,
+        };
+
+        if (!this.bids.some((bid) => bid.userId === this.user.id)) {
           await pushBid(itemData);
-          this.$emit("updateRanking");
           this.$message.success("Bid Success");
-          this.fetchBids(this.slug);
-        }
-        else{
-          itemData["userId"] = this.userId;
-          itemData["id"] = this.bidId;
-          itemData["itemId"] = this.slug;
+        } else {
+          itemData.userId = this.userId;
+          itemData.id = this.bidId;
+          itemData.itemId = this.slug;
           await updateBid(itemData);
-          this.$emit("updateRanking");
-          this.$message.success("Update successfully");
+          this.$message.success("Update Successfully");
         }
-        
-      } catch (e) {
+
+        // Refresh item and bids data after a successful bid
+        await this.updateItemData();
+        await this.fetchBids(this.slug);
+
         this.$emit("updateRanking");
-        this.$buefy.toast.open({
-          message: `Cannot bid this item. ${e}`,
-          type: "is-danger",
-        });
+        this.amount = "";
+      } catch (e) {
+        console.log(e.message);
       } finally {
         this.isLoading = false;
       }

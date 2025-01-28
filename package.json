@@ -25,6 +25,7 @@
     "js-cookie": "^3.0.5",
     "nprogress": "^0.2.0",
     "primevue": "^2.6.0",
+    "socket.io-client": "^4.8.1",
     "vditor": "^3.10.2",
     "vue": "^2.6.11",
     "vue-media-upload": "^2.2.4",

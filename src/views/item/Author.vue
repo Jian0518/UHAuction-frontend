@@ -7,7 +7,10 @@
       <div class="has-text-centered">
         <p class="is-size-5 mb-5">
           <router-link :to="{ path: `/member/${user.username}/home` }">
-            {{ user.alias }} <span class="is-size-7 has-text-grey">{{ '@' + user.username }}</span>
+            {{ user.alias }}
+            <span class="is-size-7 has-text-grey">{{
+              "@" + user.username
+            }}</span>
           </router-link>
         </p>
         <div class="columns is-mobile">
@@ -29,7 +32,11 @@
             Followed
           </button>
 
-          <button v-else class="button is-link button-center is-fullwidth" @click="handleFollow(user.id)">
+          <button
+            v-else
+            class="button is-link button-center is-fullwidth"
+            @click="handleFollow(user.id)"
+          >
             Follow
           </button>
         </div>
@@ -39,65 +46,65 @@
 </template>
 
 <script>
-import { follow, hasFollow, unFollow } from '@/api/follow'
-import { mapGetters } from 'vuex'
+import { follow, hasFollow, unFollow } from "@/api/follow";
+import { mapGetters } from "vuex";
 export default {
-  name: 'Author',
+  name: "Author",
   props: {
     user: {
       type: Object,
-      default: null
-    }
+      default: null,
+    },
   },
   data() {
     return {
-      hasFollow: false
-    }
+      hasFollow: false,
+    };
   },
   mounted() {
-    this.fetchInfo()
+    this.fetchInfo();
   },
   computed: {
-    ...mapGetters([
-      'token'
-    ])
+    ...mapGetters(["token"]),
   },
   methods: {
     fetchInfo() {
-      if(this.token != null && this.token !== '')
-      {
-        hasFollow(this.user.id).then(value => {
-          const { data } = value
-          this.hasFollow = data.hasFollow
-        })
+      if (this.token != null && this.token !== "") {
+        hasFollow(this.user.id).then((value) => {
+          const { data } = value;
+          this.hasFollow = data.hasFollow;
+        });
       }
     },
-    handleFollow: function(id) {
-      if(this.token != null && this.token !== '')
-      {
-        follow(id).then(response => {
-          const { message } = response
-          this.$message.success(message)
-          this.hasFollow = !this.hasFollow
-          this.user.followerCount = parseInt(this.user.followerCount) + 1
-        })
-      }
-      else{
-        this.$message.success('Please login first')
+    handleFollow: function (id) {
+      if (this.token != null && this.token !== "") {
+        follow(id)
+          .then((response) => {
+            const { message } = response;
+            this.$message.success(message);
+            this.hasFollow = !this.hasFollow;
+            this.user.followerCount = parseInt(this.user.followerCount) + 1;
+          })
+          .catch((error) => {
+            const errorMessage = error.message || "Unknown error occurred";
+              console.log(errorMessage)
+          });
+      } else {
+        this.$message.error("Please login first");
       }
     },
-    handleUnFollow: function(id) {
-      unFollow(id).then(response => {
-        const { message } = response
-        this.$message.success(message)
-        this.hasFollow = !this.hasFollow
-        this.user.followerCount = parseInt(this.user.followerCount) - 1
-      })
-    }
-  }
-}
+
+    handleUnFollow: function (id) {
+      unFollow(id).then((response) => {
+        const { message } = response;
+        this.$message.success(message);
+        this.hasFollow = !this.hasFollow;
+        this.user.followerCount = parseInt(this.user.followerCount) - 1;
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
-
 </style>
