@@ -7,6 +7,13 @@ export function getCategory() {
   })
 }
 
+export function getCategoryStatistic() {
+  return request({
+    url: '/category/statistic',
+    method: 'get'
+  })
+}
+
 export function getItemsByTag(paramMap) {
   return request({
     url: '/category/' + paramMap.name,

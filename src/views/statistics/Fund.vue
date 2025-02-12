@@ -310,7 +310,7 @@ import {
   getAllItem,
   getItemByMonth,
 } from "@/api/item";
-import { getCategory } from "@/api/category";
+import { getCategoryStatistic } from "@/api/category";
 import { getUserName } from "@/api/user";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiAccount } from "@mdi/js";
@@ -424,7 +424,7 @@ export default {
       });
     },
     fetchCategory() {
-      getCategory().then((result) => {
+      getCategoryStatistic().then((result) => {
         this.category = result.data;
         this.renderCategoryChart();
       });
@@ -676,9 +676,9 @@ export default {
         this.percentageChange = 0;
         return;
       }
-
-      const currentMonth = this.fundMonth[this.fundMonth.length - 2].amount;
-      const lastMonth = this.fundMonth[this.fundMonth.length - 3].amount;
+      console.log("Fund Month " + this.fundMonth[this.fundMonth.length-1].amount + " " + this.fundMonth[this.fundMonth.length-2].amount)
+      const currentMonth = this.fundMonth[this.fundMonth.length - 1].amount;
+      const lastMonth = this.fundMonth[this.fundMonth.length - 2].amount;
 
       if (lastMonth === 0) {
         this.percentageChange = currentMonth === 0 ? 0 : 100;
